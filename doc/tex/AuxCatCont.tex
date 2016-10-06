@@ -1,0 +1,211 @@
+\begin{code}%
+\>\AgdaKeyword{module} \AgdaModule{CatCont} \AgdaKeyword{where}\<%
+\\
+%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Relation.Binary.HeterogeneousEquality}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Cat}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Container}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Morphism}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Product}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Sum}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Unit}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Empty}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Exponential}\<%
+\\
+\>\AgdaKeyword{open} \AgdaKeyword{import} \AgdaModule{Level}\<%
+\\
+\>\AgdaKeyword{open} \AgdaModule{Cont}\<%
+\\
+\>\AgdaKeyword{open} \AgdaModule{\_⇒\_}\<%
+\end{code}
+
+
+\begin{code}%
+\>\AgdaFunction{𝑪𝒐𝒏𝒕} \AgdaSymbol{:} \AgdaRecord{Cat}\<%
+\\
+\>\AgdaFunction{𝑪𝒐𝒏𝒕} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{Obj} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaRecord{Cont}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{Mor} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaRecord{\_⇒\_}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{iden} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaFunction{id}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{comp} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaFunction{\_∘\_}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{idl} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{idr} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{ass} \<[20]%
+\>[20]\AgdaSymbol{=} \AgdaInductiveConstructor{refl}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\}}\<%
+\end{code}
+
+
+%<*hasProducts>
+\begin{code}%
+\>\AgdaFunction{ContHasProducts} \AgdaSymbol{:} \AgdaRecord{HasProducts} \AgdaFunction{𝑪𝒐𝒏𝒕}\<%
+\\
+\>\AgdaFunction{ContHasProducts} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{\_×\_} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{proj₁} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{proj₂} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<[31]%
+\>[31]\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{⟨\_,\_⟩} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{pairIdl} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<[51]%
+\>[51]\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{pairIdr} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{pairUnique} \<[26]%
+\>[26]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\}}\<%
+\end{code}
+%</hasProducts>
+
+%<*hasCoproducts>
+\begin{code}%
+\>\AgdaFunction{ContHasCoproducts} \AgdaSymbol{:} \AgdaRecord{HasCoproducts} \AgdaFunction{𝑪𝒐𝒏𝒕}\<%
+\\
+\>\AgdaFunction{ContHasCoproducts} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{Coprod} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{inl} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{inr} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{copair} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{copairIdl} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{copairIdr} \<[28]%
+\>[28]\AgdaSymbol{=} ? \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{copairUnique} \<[28]%
+\>[28]\AgdaSymbol{=} ? \AgdaSymbol{\}} \<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\<%
+\end{code}
+%</hasCoproducts>
+
+\begin{code}%
+\>\AgdaFunction{ContHasTerminal} \AgdaSymbol{:} \AgdaRecord{HasTerminal} \AgdaFunction{𝑪𝒐𝒏𝒕}\<%
+\\
+\>\AgdaFunction{ContHasTerminal} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{Terminal} \AgdaSymbol{=} \AgdaFunction{One}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{toTermMor} \AgdaSymbol{=} \AgdaFunction{Oneₘ}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{isUniqueToTermMor} \AgdaSymbol{=} \AgdaFunction{OneₘUnique} \AgdaSymbol{\}}\<%
+\end{code}
+
+
+\begin{code}%
+\>\AgdaFunction{ContHasInitial} \AgdaSymbol{:} \AgdaRecord{HasInitial} \AgdaFunction{𝑪𝒐𝒏𝒕}\<%
+\\
+\>\AgdaFunction{ContHasInitial} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{Initial} \AgdaSymbol{=} \AgdaFunction{Zero}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{fromInitMor} \AgdaSymbol{=} \AgdaFunction{Zeroₘ}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{isUniqueFromInitMor} \AgdaSymbol{=} \AgdaFunction{ZeroₘUnique} \AgdaSymbol{\}}\<%
+\end{code}
+
+
+\begin{code}%
+\>\AgdaFunction{ContHasExponentials} \AgdaSymbol{:} \AgdaRecord{HasExponentials} \AgdaFunction{𝑪𝒐𝒏𝒕} \AgdaFunction{ContHasProducts}\<%
+\\
+\>\AgdaFunction{ContHasExponentials} \AgdaSymbol{=} \AgdaKeyword{record}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\{} \AgdaField{Exp} \AgdaSymbol{=} \AgdaFunction{\_\textasciicircum{}×\_}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{curry} \AgdaSymbol{=} \AgdaFunction{⌊\_⌋}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{uncurry} \AgdaSymbol{=} \AgdaFunction{⌈\_⌉}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{iso₁} \AgdaSymbol{=} \AgdaSymbol{λ} \AgdaSymbol{\{}\AgdaBound{X} \AgdaBound{Y} \AgdaBound{Z} \AgdaBound{f}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaFunction{⌊⌋∘⌈⌉≅id} \AgdaBound{f}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{iso₂} \AgdaSymbol{=} \AgdaSymbol{λ} \AgdaSymbol{\{}\AgdaBound{X} \AgdaBound{Y} \AgdaBound{Z} \AgdaBound{f}\AgdaSymbol{\}} \AgdaSymbol{→} \AgdaFunction{⌈⌉∘⌊⌋≅id} \AgdaBound{f}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{nat₁} \AgdaSymbol{=} \AgdaFunction{nat₁} \<[26]%
+\>[26]\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{;} \AgdaField{nat₂} \AgdaSymbol{=} \AgdaFunction{nat₂}\<%
+\\
+\>[0]\AgdaIndent{12}{}\<[12]%
+\>[12]\AgdaSymbol{\}}\<%
+\end{code}

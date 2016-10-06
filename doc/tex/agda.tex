@@ -1,0 +1,441 @@
+\chapter{Introducci\'on a Agda} \label{chapter:agda}
+
+\begin{epigraphs}
+\qitem{
+  Mas para conversaciones cortas, un hombre puede llevar los necesarios utensilios en los bolsillos o debajo del brazo, y en su casa no puede faltarle lo que precise. Así, en la estancia donde se reúnen quienes practican este arte hay siempre a mano todas las cosas indispensables para alimentar este género artificial de conversaciones.}{Los Viajes de Gulliver\\ Jonathan Swift}
+\end{epigraphs}
+
+
+Agda~\cite{norell:thesis} es un lenguaje de programación desarrollado por la Universidad de Chalmers, que se caracteriza principalmente por poseer lo que se denominan tipos dependientes. A diferencia de algunos lenguajes de programación, como ser Haskell o ML, donde se diferencia claramente el lenguaje de los términos y el lenguaje de los tipos de datos, en los lenguajes con tipos dependientes los tipos son también valores. Esto implica que pueden depender de otros valores, ser tomados como argumento o retornados por funciones.
+
+Gracias al isomorfismo de Curry-Howard, Agda es no sólo un lenguaje de programación sino también un asistente de prueba. Coloquialmente hablando, el isomorfismo de Curry-Howard es una correspondencia entre la teoría de tipos y la lógica, equiparando tipos con proposiciones, términos con pruebas y evaluación de términos a forma normal, con normalización de pruebas. Como los tipos dependientes permiten hablar sobre valores dentro del mismo tipo, podemos expresar proposiciones que se refieran a los valores, como tipos de datos. Dichas proposiciones serán teoremas una vez que se provean habitantes del tipo de datos. Es decir que los términos son pruebas formales de la veracidad de las proposiciones. 
+
+Agda es una implementación de la teoría de tipos de Martin-Löf~\cite{Martin-Lof-1972,Martin-Lof-1973,Martin-Lof-1979,martin-lof:bibliopolis}. Este introduce una lógica intuicionista, que a diferencia del lenguaje tradicional utilizado previamente en sistemas intuicionistas, permite incluir pruebas como parte de las proposiciones, utilizando el mismo lenguaje. Consciente de la relación, Martin-Löf propone el uso de su lógica intuicionista como un lenguaje de programación. Para que la lógica sea consistente, los programas deberán ser totales, no pudiendo fallar o no terminar, es por esta razón que Agda incluye mecanismos para la comprobación de la terminación de los programas.
+
+Esta sección está dedicada a presentar una introducción a Agda, prestando especial atención a cuestiones necesarias para la exposición de la temática principal de esta tesina. 
+\newpage
+
+\section{Tipos de datos}\label{agda:data}
+
+Para comenzar esta breve introducción al lenguaje de programación Agda, veremos cómo definir tipos de datos. La principal forma de hacerlo se muestra en el ejemplo del código \ref{code:bool}.
+
+Comenzamos definiendo nombre, parámetros y signatura del nuevo tipo de datos, entre las palabras reservadas \AgdaKeyword{data} y \AgdaKeyword{where}:
+
+\AgdaKeyword{data} {\it <nombre>} {\it <parámetros>} : {\it <signatura>} \AgdaKeyword{where}.
+
+En el siguiente ejemplo definimos al tipo \AgdaDatatype{Bool}, que carece de parámetros y cuyo tipo es \AgdaDatatype{Set}.
+
+\begin{agdacode}{\it Booleanos}\label{code:bool}
+  
+\ExecuteMetaData[latex/Agda.tex]{bool} 
+\end{agdacode}
+
+En Agda, el lenguaje de términos y el lenguaje de tipos es el mismo. El elemento \AgdaDatatype{Set} es el tipo que tienen los tipos de datos. Dicho esto, una pregunta sensata resulta ser: ¿eso significa que \AgdaDatatype{Set} tiene tipo \AgdaDatatype{Set}? La respuesta a esta pregunta es no
+y la razón es evitar la paradoja de Girard, mencionada en la sección de introducción.
+Para explicarlo someramente podemos decir que \AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} y proceder a corregir una aseveración previa: \AgdaDatatype{Set} es el tipo que tienen los tipos de datos {\it pequeños}. El tipo \AgdaDatatype{Set$_{1}$}, por su parte, tendrá tipo \AgdaDatatype{Set$_{2}$}. Se genera así la siguiente jerarquía de tipos:
+
+\sangrar
+\AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} : \AgdaDatatype{Set$_{2}$} : \AgdaDatatype{Set$_{3}$} \ldots
+
+En esta tesina tomaremos el criterio general de pasar por alto el detalle de a qué nivel de universo pertenecen nuestras construcciones, con el objetivo de simplificar las exposiciones. En su lugar, a menos que se indique explícitamente de otra forma, consideraremos $\Set : \Set$. Sin embargo, en el código Agda que acompaña a esta tesina, los distintos niveles se respetan.
+
+Retomando el análisis del código expuesto en \ref{code:bool}, observemos que la definición continúa con la declaración de los constructores de términos. La indentación no es una mera cuestión de estilo sino que forma parte del lenguaje. En este caso decimos que los únicos habitantes del tipo \AgdaDatatype{Bool} son los elementos \AgdaInductiveConstructor{true} y \AgdaInductiveConstructor{false}. Es decir, implícitamente esta forma de definir datos nos asegura que los constructores que declaremos sean todas las formas de construcción posibles.
+De esta forma, si quisiéramos definir un tipo vacío simplemente no declararíamos constructor alguno, como se puede observar en el código \ref{code:bot} donde definimos el tipo vacío \AgdaDatatype{$\bot$}.
+
+\begin{agdacode}{\it Tipo vacío $\bot$}\label{code:bot}
+  
+\ExecuteMetaData[latex/Agda.tex]{bot} 
+\end{agdacode}
+
+Podría resultarnos curioso a primera vista la utilización de símbolos como ser ``$\bot$'' o subíndices ``$_{1}$''. En efecto, otra característica particular de Agda es que permite la utilización de caracteres unicode, haciendo más natural la introducción de conceptos matemáticos.
+
+\section{Pattern matching y funciones anónimas} \label{agda:function}
+
+Ahora que contamos con nuestros dos primeros tipos de datos, pasemos a construir funciones sobre ellos.
+Una función muy simple que podemos construir sobre el tipo \AgdaDatatype{Bool} es la función identidad.
+
+\begin{agdacode}{\it Función identidad para booleanos}\label{code:idBool}
+
+\ExecuteMetaData[latex/Agda.tex]{idBool}
+\end{agdacode}
+Notemos la función identidad no opera sobre el valor que recibe, simplemente lo retorna. Si quisiéramos operar sobre valores booleanos, tendríamos que diferenciar los casos donde $x$ es \AgdaInductiveConstructor{true} de los casos donde es \AgdaInductiveConstructor{false}.
+La función \AgdaFunction{not} de negación toma un valor booleano y retorna otro, siendo este falso cuando el argumento es verdadero y viceversa.
+Gracias a que la construcción de un tipo de datos se realiza mediante la declaración de un conjunto determinado de constructores,
+resulta muy sencillo garantizar la totalidad de las funciones, asegurando que la función se defina para cada constructor. Este recurso tiene el nombre de coincidencia de patrones, más conocido por su versión en inglés {\it pattern matching} y es la forma que tiene Agda para asegurar la totalidad. En este caso, la función \AgdaFunction{not} puede aceptar sólo valores de la forma \AgdaInductiveConstructor{true} o \AgdaInductiveConstructor{false}, dedicándosele una línea de código a cada posibilidad. 
+
+\begin{agdacode}{\it Función de negación}\label{code:not}
+  
+\ExecuteMetaData[latex/Agda.tex]{not}
+\end{agdacode}
+
+A diferencia de lenguajes funcionales como Haskell o ML, Agda no siempre puede inferir el tipo de las funciones, por lo que la declaración de signatura, i.e., la primera línea de la definición de \AgdaFunction{not} del código \ref{code:not}, no puede obviarse. 
+
+Otro tipo de pattern matching que permite la sintaxis de Agda es sobre funciones anónimas. Una función anónima es una función sin nombre. Por ejemplo, podemos definir la función identidad de forma anónima cómo $(\lambda\ x \to\ x)$. Es decir, dado un valor cualquiera, lo retornamos.
+
+Pero como hemos observado antes, la función \AgdaFunction{idBool} en particular no observa nada del argumento. ¿Cómo haríamos si quisiéramos retornar algo en función del valor del argumento? Agda permite hacer pattern matching dentro de funciones anónimas utilizando llaves para englobar la función, y punto y coma para separar los casos. La versión anónima de \AgdaFunction{not} es entonces: $(\lambda\ \{ \AgdaInductiveConstructor{true} \to \AgdaInductiveConstructor{false} ; \AgdaInductiveConstructor{false} \to \AgdaInductiveConstructor{true} \})$.
+
+Otro ejemplo de uso de pattern matching en funciones anónimas se muestra en el código \ref{code:and}, donde definimos la función \AgdaFunction{and} de conjunción de booleanos. Observar que en el caso donde el primer argumento es falso, no importa el valor del segundo y lo marcamos con guión bajo. El guión bajo ubicado en la posición de una variable indica que dicha variable no se utiliza y por lo tanto no es necesario darle un nombre.  
+
+\begin{agdacode}{\it Conjunción de booleanos}\label{code:and}
+  
+\ExecuteMetaData[latex/Agda.tex]{and}
+\end{agdacode}
+Podríamos necesitar también hacer pattern matching sobre más de un argumento. Lógicamente esto es igualmente posible, por ejemplo, para definir la función \AgdaFunction{xor} de booleanos:
+
+\ExecuteMetaData[latex/Agda.tex]{xor}
+
+Hay un caso especial de pattern matching al que le queremos prestar especial atención: el patrón absurdo. Digamos que queremos definir una función que vaya del tipo vacío hacia los booleanos. ¿Es posible construir tal función, considerando que no tenemos elementos en el dominio? Justamente, resulta trivial definirla, es la función vacía. En Agda se indica al patrón absurdo con paréntesis que abren y cierran, como se observa en el código \ref{emptyToBool}.
+\begin{agdacode}{\it Función vacía hacia los booleanos}\label{emptyToBool}
+
+  \ExecuteMetaData[latex/Agda.tex]{emptyToBool}
+\end{agdacode}
+
+Hemos visto entonces algunas formas de escribir funciones en Agda haciendo uso del pattern matching. La variable $x$ en la definición de la función identidad, en el código \ref{code:idBool}, es un patrón que asocia cualquier valor posible de booleano al nombre $x$; el guión bajo es un patrón que también asocia todo valor del tipo dado, pero sin asignarle un nombre; los constructores \AgdaInductiveConstructor{true} y \AgdaInductiveConstructor{false} se asocian con las dos posibles formas que puede tener un habitante del tipo de los booleanos mientras que el patrón absurdo indica la ausencia de valor posible para dicho argumento.
+
+\section{Polimorfismo y argumentos implícitos}
+
+Observemos que la función \AgdaFunction{idBool} definida en el código \ref{code:idBool} podría haber sido definida para cualquier tipo de datos en lugar de los booleanos. Esto es posible porque simplemente retorna inmaculado el valor que se le pasó como argumento y no necesita conocer detalles del tipo al que pertenece. Quisiéramos modificar dicha función para expresar este hecho, es decir, quisiéramos poder decir que la función identidad toma un elemento de un tipo cualquiera y retorna otro del mismo tipo.
+Un programador de Haskell seguramente propondría escribir el siguiente código, siendo $X$ una variable que representa cualquier tipo de datos.
+
+\sangrar
+\AgdaFunction{id$_0$} : $X$ $\to$ $X$\\
+\-\ \hspace{4.5ex}
+\AgdaFunction{id$_0$} $x = x$
+
+Ante dicho código, Agda dirá que hay un error, alegando que la variable $X$ no está definida. Para remediar esta cuestión, simplemente hay que informar que $X$ es un tipo de datos, agregándolo como parámetro de la función, como se muestra en el código \ref{code:id1}. 
+\begin{agdacode}{\it Función identidad polimórfica}\label{code:id1}
+
+  \ExecuteMetaData[latex/Agda.tex]{id1}
+\end{agdacode}
+
+Contamos también con la posibilidad de definir funciones con {\it argumento implícito}. 
+Un argumento que se define entre llaves en la signatura se denomina argumento implícito y puede obviarse su escritura siempre que Agda sea capaz de inferirlo.
+
+\begin{agdacode}{\it Función identidad polimórfica con argumento implícito}\label{code:id}
+
+  \ExecuteMetaData[latex/Agda.tex]{id}
+\end{agdacode}
+
+Notemos que si bien incluimos a $X$ como parámetro en la signatura de la función \AgdaFunction{id}, aclarando también su pertenencia a \AgdaDatatype{Set}, no tenemos que incluirlo en la definición. Siempre que sea inferible, tampoco tendremos que hacerlo al momento de usar la función identidad.
+
+\begin{agdacode}{\it Función vacía polimórfica}\label{empty}
+
+  \ExecuteMetaData[latex/Agda.tex]{empty}
+\end{agdacode}
+
+En el código \ref{empty} recién expuesto vemos otro ejemplo de función que puede ser definida para cualquier tipo de datos en lugar de hacerlo exclusivamente para los booleanos; se trata de la versión polimórfica de la función \AgdaFunction{emptyToBool} presentada en el código \ref{emptyToBool}. Notar que el argumento $X$ se define de forma implícita y por lo tanto no se incluye en la definición pues no resulta necesario.
+
+Para tener en cuenta en las futuras secciones, la versión anónima de la función vacía es sencillamente $\lambda\ ()$ o bien $\lambda\ \{\}$ si el argumento es implícito. 
+
+\section{Otro tipo de datos y operadores infijos} \label{agda:infix}
+
+Vemos a continuación un ejemplo donde el tipo de datos a construir tiene como parámetros a otros tipos de datos. 
+\begin{agdacode}{\it Producto cartesiano de conjuntos}\label{code:times}
+
+\ExecuteMetaData[latex/Agda.tex]{times}
+\end{agdacode}
+
+El tipo de los pares, también conocido como producto cartesiano de conjuntos, es un tipo construido a partir de otros dos. En estos casos decimos que el tipo \AgdaDatatype{$\_\times\_$} se encuentra {\it parametrizado} por los tipos $X$ e $Y$.
+El elemento \AgdaInductiveConstructor{$\_,\_$} es una función que construye un valor del producto cartesiano de $X$ e $Y$ a partir de un elemento de cada uno de ellos.
+
+Utilizar guiones bajos en una definición nos permite luego ubicar los argumentos en los lugares donde se encontraban los guiones. En particular, obtenemos una notación infija, como podemos observar en la última línea de la definición de tipo, donde aparece $X$ \AgdaDatatype{$\times$} $Y$. De la misma forma podemos utilizar el constructor de datos \AgdaInductiveConstructor{$\_,\_$}. Por ejemplo, observar la siguiente función que proyecta el primer elemento de un par, definida en el código \ref{code:proj1}. Este recurso puede asimismo utilizarse para definir funciones posfijas o multifijas.
+
+\begin{agdacode}{\it Proyección izquierda de un par}\label{code:proj1}
+
+\ExecuteMetaData[latex/Agda.tex]{proj1}
+\end{agdacode}
+
+Siempre que Agda pueda inferir el tipo de un elemento, será posible utilizar la notación $\forall\{a\}$ en lugar de $\{a : A\}$. Es decir, sin indicar explícitamente el tipo. Esto hacemos en la signatura de \AgdaFunction{proj$_1$} ya que en este caso, Agda puede inferir a partir de la definición del tipo producto dada en \ref{code:times} que tanto $X$ como $Y$ deberán ser habitantes de \AgdaDatatype{Set}.
+
+\section{Records}\label{agda:record}
+
+Una forma interesante de definir tuplas de datos como lo es el producto, es mediante un \AgdaKeyword{record}. De la misma forma que ciertas construcciones de muchos lenguajes de programación como ser las estructuras de {\it C} o los homónimos records de Haskell, los records en Agda son valores compuestos por otros de distinto tipo: sus campos, listados por nombre debajo de la palabra reservada \AgdaKeyword{field}. En este caso, nombramos \AgdaField{proj$_1$} y \AgdaField{proj$_2$} al valor izquierdo y derecho del par, respectivamente. Opcionalmente podemos definir un símbolo para el constructor mediante el uso de la cláusula \AgdaKeyword{constructor}. En este caso decidimos usar un símbolo de coma.
+
+\begin{agdacode}{\it Redefiniendo el producto cartesiano de conjuntos utilizando records} \label{code:record:producto}
+
+  \ExecuteMetaData[latex/CartesianProduct.tex]{times}
+\end{agdacode}
+
+Los nombres de los campos del record hacen las veces de funciones de acceso al mismo. Toman como argumento una instancia del record y retornan su primer y segundo elemento, respectivamente:
+
+\sangrar
+\AgdaField{proj$_{1}$} : $\forall\{X\ Y\}\ \to\ X$ \AgdaFunction{$\times$} $Y\ \to\ X$
+
+\sangrar
+\AgdaField{proj$_{2}$} : $\forall\{X\ Y\}\ \to\ X$ \AgdaFunction{$\times$} $Y\ \to\ Y$
+
+
+\section{Inducción, recursión y terminación}
+
+Otro tipo de datos que nos será de utilidad es el de los números naturales, es decir, los números enteros no negativos. Lo construimos de forma inductiva, basándonos en la formalización de Peano.
+Declaramos primero un constructor \AgdaInductiveConstructor{zero} que represente al número natural cero y luego una función \AgdaInductiveConstructor{suc} que asegure que para todo número natural existe su sucesor.
+
+\begin{agdacode}{\it Conjunto de números naturales} \label{code:nat}
+
+  \ExecuteMetaData[latex/Agda.tex]{nat}
+\end{agdacode}
+
+La suma sobre números naturales puede ser definida haciendo recursión primitiva sobre el primer argumento.
+
+\begin{agdacode}{\it Suma de naturales} \label{code:suma}
+
+\ExecuteMetaData[latex/Agda.tex]{suma}
+\end{agdacode}
+
+Tenemos dos casos: el caso base, donde decimos que la suma entre cero y cualquier otro número resulta en este último; y por otro lado el caso recursivo, donde decimos que sumar el sucesor de un número con cualquier otro es igual al sucesor de la suma de ellos dos.
+
+Como los programas en Agda son totales, se deberá garantizar su terminación. Seguramente el lector se encontrará sorprendido ante tal aseveración. ¿Cómo es esto posible, si estamos frente al famoso problema de la parada, que sabemos indecidible? Pues bien, Agda es un lenguaje para el cual el chequeo de terminación resulta decidible, pero lo logra perdiendo expresividad en el camino. Usando Agda, obtenemos garantía de terminación en detrimento de turing-completitud. 
+Las llamadas recursivas a las funciones deben realizarse sobre argumentos estructuralmente más pequeños para así poder garantizar que terminan. En este sentido, Agda considera que $x$ es menor en estructura que \AgdaInductiveConstructor{suc} $x$ y acepta a \AgdaFunction{suma} como válida.
+
+\section{Tipo de datos dependientes}
+
+La primera característica del lenguaje de programación Agda que suele mencionarse a la hora de describirlo es la de poseer {\it tipos dependientes}. Un tipo dependiente es aquél que depende de valores de otro tipo. Más precisamente, que se encuentra indexado por otro tipo. Un ejemplo paradigmático de tipo de datos dependiente es el de los vectores, listas de tamaño fijo. 
+\begin{agdacode}{\it Vectores}\label{code:Vec}
+
+  \ExecuteMetaData[latex/Agda.tex]{Vec}
+\end{agdacode}
+
+Se puede observar en la definición que \AgdaDatatype{Vec} $A$ : \AgdaDatatype{$\Nat$} $\to$ \AgdaDatatype{Set}, es decir, queda definida una familia de tipos de datos indexada por los naturales. Para cada número natural, obtenemos el tipo de los vectores de dicha longitud.
+
+Una forma sencilla de tipo dependiente es la de las funciones donde el tipo resultado depende de los valores del resto de los argumentos. Por ejemplo, el tipo $(x : A)$ $\to$ $B$ construye aquellas funciones que toman un valor $x$ de tipo $A$ y retornan un valor de tipo $B$, donde se permite que $B$ dependa de $x$. Particularmente, $x$ podría ser a su vez un tipo, siendo $A$ el conjunto \AgdaDatatype{Set}. Este caso lo hemos visto en reiteradas ocasiones hasta ahora; en la definición de la función identidad, la función vacía polimórfica, las proyecciones del producto.
+
+\section[Proposiciones como tipos y la equivalencia proposicional]{Proposiciones como tipos, programas como pruebas y la equivalencia proposicional}\label{prop}
+
+Hemos mencionado en la introducción que el sistema de tipos de Agda es lo suficientemente poderoso como para poder representar proposiciones en la forma de tipos cuyos habitantes serán las pruebas de dichas proposiciones. Vimos además, quizás sin darnos cuenta, una proposición en la forma de tipo de datos: la proposición falsa. El tipo de datos \AgdaDatatype{$\bot$} no tiene habitantes. Dado que no existen pruebas para la proposición que es siempre falsa, este tipo resulta ser un buen modelo.
+
+De forma similar, la proposición que es siempre verdadera tiene un elemento trivial.
+
+\ExecuteMetaData[latex/Agda.tex]{top}
+
+Además, podemos construir la proposición de la negación. Como vemos en el código \ref{code:neg}, la negación de una proposición modelada en el tipo $A$ es la función de tipo $A \to \bot$. Esto se debe a que cuando una proposición es falsa carece de pruebas que la habiten y es sólo en ese caso posible construir una función (la función vacía) que vaya hacia el tipo vacío. En contrapartida, si queremos probar la negación de una proposición verdadera nos resulta imposible, puesto que tendríamos que proveer un elemento de \AgdaDatatype{$\bot$}. También resulta sensato desde el punto de vista de la lógica, donde la negación de un juicio suele expresarse como su implicancia a falso. 
+
+\begin{agdacode}{\it Negación de una proposición} \label{code:neg}
+
+  \ExecuteMetaData[latex/Agda.tex]{neg}
+\end{agdacode}
+
+
+Una proposición más interesante es la de la equivalencia proposicional, introducida por Martin Löf~\cite{Martin-Lof-1972,Martin-Lof-1973}, expuesta en el código \ref{code:propequiv}.
+El tipo de datos \AgdaDatatype{$\_\equiv\_$} construye, a partir de un tipo de datos $A$ y un habitante $x$, una familia de tipos indexada en $A$. Es decir, por cada elemento $y$ de $A$, obtenemos el conjunto $x$ \AgdaDatatype{$\equiv$} $y$, que estará habitado por el elemento \AgdaInductiveConstructor{refl} sólo cuando $y$ sea igual a $x$. 
+
+\begin{agdacode}{\it Equivalencia proposicional} \label{code:propequiv}
+
+  \ExecuteMetaData[latex/MyPropositionalEquality.tex]{equiv}
+\end{agdacode}
+
+A primera vista esta equivalencia puede parecer insuficiente pues a priori sólo nos permite probar la igualdad de elementos que son trivialmente iguales. Para entender cómo esta definición resulta útil para probar equivalencias no triviales, tenemos primero que comprender la forma en que Agda entiende a la igualdad {\it definicional} y su mecanismo de {\it unificación}.   
+
+Recordemos la definición de \AgdaFunction{suma} dada en el código \ref{code:suma}. Allí dijimos que sumar el sucesor de un número con otro es {\it igual} al sucesor de la suma de ellos dos. Dicha igualdad es una igualdad {\it definicional} y Agda la considera trivial. Entonces podemos proveer una prueba de dicha aseveración de forma muy sencilla, simplemente con el constructor de la reflexividad, como se muestra en el siguiente código:
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{sumasuc1}
+
+Si quisiéramos probar, por el contrario, el siguiente juicio levemente diferente a la forma definicional, donde el sucesor se aplica al segundo argumento, Agda no considera que la prueba sea posible simplemente por reflexividad.
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{sumasuc2t}
+
+En estos casos sacaremos provecho del mecanismo de unificación de Agda, y probaremos lemas que nos ayuden con las pruebas. A continuación vemos el llamado lema de congruencia, que asevera que dados dos elementos proposicionalmente iguales, lo serán también las respectivas aplicaciones de una misma función. Al hacer pattern matching sobre $x$ \AgdaDatatype{$\equiv$} $y$ nos encontramos con que el único habitante de dicho tipo será el constructor \AgdaInductiveConstructor{refl}. En ese punto, Agda {\it unifica} dicha equivalencia y pasa considerar a $x$ e $y$ indistintos. Queda entonces pendiente una prueba trivial de la igualdad de $f x$ con $f y$.
+\begin{agdacode}{\it Lema de congruencia proposicional} \label{code:pcong}
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{cong}
+\end{agdacode}
+Finalmente, podemos utilizar este lema en el segundo caso de pattern matching --dado que el primero resulta trivial-- junto con la llamada recursiva sobre un elemento estructuralmente menor, para concluir la definición de \AgdaFunction{sumasuc$_2$}.
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{sumasuc2d}
+
+Observemos que esto se realiza utilizando la llamada recursiva como hipótesis inductiva. Es decir, el valor \AgdaFunction{sumasuc$_2$} $\{x\}$ 
+es prueba de la siguiente proposición: $$\AgdaFunction{suma } x\ (\AgdaInductiveConstructor{suc } y)\ \AgdaFunction{ $\equiv$ } \AgdaInductiveConstructor{suc } (\AgdaFunction{suma } x\ y)$$
+Al aplicar \AgdaFunction{cong} \AgdaInductiveConstructor{suc} a dicho valor demostramos la siguiente equivalencia, que ya es definicionalmente equivalente a lo que buscamos probar:
+$$\AgdaInductiveConstructor{suc } (\AgdaFunction{suma } x\ (\AgdaInductiveConstructor{suc } y))\ \AgdaFunction{ $\equiv$ } \AgdaInductiveConstructor{suc } (\AgdaInductiveConstructor{suc } (\AgdaFunction{suma } x\ y))$$
+
+Utilizando unificación es posible probar también que \AgdaDatatype{$\_\equiv\_$} es en efecto una relación de equivalencia. La prueba de la reflexividad no es nada más ni nada menos que el constructor canónico del tipo de datos. Queda pendiente probar la simetría y la transitividad. En el primer caso, una vez unificada la equivalencia entre $x$ e $y$, resulta obvia la equivalencia simétrica. En el segundo caso, luego de unificar las equivalencias entre $x$ e $y$ y entre $y$ y $z$ y hacer que internamente Agda los considere tres elementos indistintos, la prueba de $x$ \AgdaDatatype{$\equiv$} $z$ resulta trivial.
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{sym}
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{trans}
+
+Hemos demostrado cómo en un lenguaje de tipos dependientes como lo es Agda es posible expresar propiedades en la forma de tipos, cuyos habitantes serán pruebas de la veracidad de la proposición. Esta particularidad resulta ser un recurso muy útil para expresar propiedades genéricas sobre las construcciones. La metodología consiste en definir un tipo de datos parametrizado que exprese la propiedad o conjunto de propiedades que se quiera modelar. Probar que la propiedad se cumple en una construcción en particular se limitará a proveer instancias de dicho tipo de datos genérico.  
+
+Para mayor claridad, a continuación vemos una forma de modelar la propiedad de <<ser una relación de equivalencia>>, para una relación dada \AgdaDatatype{$\_\approx\_$}. El modelo consiste en un record de tres campos, uno por cada una de las leyes a cumplirse, i.e. reflexividad, simetría y transitividad. 
+\begin{agdacode}{\it Formalización del concepto de relación de equivalencia} \label{code:isequiv}
+
+\ExecuteMetaData[latex/Agda.tex]{isEquiv}
+\end{agdacode}
+
+Una habitante de dicho tipo de datos, instanciado en la relación \AgdaDatatype{$\_\equiv\_$}, es prueba de que dicha relación es de equivalencia y se expone a continuación.
+
+\ExecuteMetaData[latex/MyPropositionalEquality.tex]{isEquivProp}
+
+\section{Suma dependiente}
+
+La suma dependiente es un tipo de datos que se asemeja mucho al tipo de producto presentado en \ref{code:record:producto} pero donde el tipo de la segunda componente puede depender del valor de la primera.
+
+Otra forma de entender a este tipo de datos es como la contracara del tipo de las funciones dependientes, que 
+hemos presentado y utilizado ampliamente en esta sección. Una función dependiente retorna un valor de un tipo que depende del elemento argumento. Lo expresamos en Agda como $(x : A)$ $\to$ $B$ donde $B$ podía depender de $x$. Para hacer esto más expreso aún, podríamos escribirlo como: $(x : A)$ $\to$ $B(x)$. Es decir que {\it para todo} valor de entrada computa un valor de salida con tipo dependiendo de ella. En teoría de tipos encontramos a esta construcción con el nombre de {\it producto dependiente}, simbolizado $\Pi x:A.B(x)$. 
+
+La {\it suma dependiente}, por su parte, codifica un tipo de datos para el cual {\it existe} un valor que lo conforme. Dicha existencia se expresa como un par, donde el primer valor es el testigo de la existencia del tipo de la segunda componente del par. 
+
+\ExecuteMetaData[latex/DependentSumIntro.tex]{sigma}
+La cláusula \AgdaKeyword{syntax} define sinónimos de tipos. En el código expuesto a continuación expresamos que en lugar de escribir $\Sigma\ A\ (\lambda x \to B)$, podemos escribir $\Sigma [ x \in A]\ B$ y así hacer explícito el hecho de que el elemento $x$ tiene tipo $A$. 
+
+\ExecuteMetaData[latex/DependentSumIntro.tex]{syntax}
+
+Para esclarecer el asunto, veamos el siguiente ejemplo que construye los elementos de tipo \AgdaDatatype{$\Nat$} para los cuales existe una prueba de ser no negativos. Un habitante de dicho tipo será, por ejemplo, el número uno, junto con la prueba de ser positivo.
+  
+\ExecuteMetaData[latex/DependentSumIntro.tex]{positive}
+
+\section{Equivalencia heterogénea}
+
+Cuando queremos referirnos a la equivalencia entre dos valores cuyos tipos son proposicionalmente pero no definicionalmente equivalentes nos encontramos en un problema. 
+Para ejemplificar la cuestión, digamos que tenemos una función dependiente $f : (x : A) \to B(x)$ y dos valores $x, y : A$ proposicionalmente equivalentes. ¿Cómo probar para $f$ el lema de congruencia si el tipo de retorno diferirá en cada lado de la igualdad? 
+Es decir, a pesar de poseer una prueba de $x$ \AgdaDatatype{$\equiv$} $y$, no podremos probar que $f x$ \AgdaDatatype{$\equiv$} $f y$ pues estos dos elementos tienen tipos definicionalmente distintos: $B(x)$ y $B(y)$ respectivamente.
+
+Una forma de lograr construir dicha prueba es a partir de una función de substitución como la que se muestra en el código \ref{code:subst}.
+Esta función se encarga de retornar el mismo valor, pero con el tipo cambiado a la versión proposicionalmente equivalente.
+
+\begin{agdacode}{\it Substitución para la equivalencia proposicional}\label{code:subst}
+
+  \ExecuteMetaData[latex/MyPropositionalEquality.tex]{subst}
+\end{agdacode}
+Utilizar este recurso implica probar algo levemente diferente: siendo {\it pr} : $x$ \AgdaDatatype{$\equiv$} $y$, probamos la equivalencia \AgdaFunction{subst} {\it pr} $(f x)$ \AgdaDatatype{$\equiv$} $f y$, como podemos observar en el siguiente código.
+
+\begin{agdacode}{\it Lema de congruencia con substitución}\label{code:scong}
+
+  \ExecuteMetaData[latex/MyPropositionalEquality.tex]{scong}
+\end{agdacode}
+
+La substitución es un recurso válido, pero incómodo, sobre todo en definiciones encadenadas y recurrentes.
+Una forma más cómoda y elegante para lidiar con dicho inconveniente es utilizar una noción de equivalencia a priori más laxa: la equivalencia heterogénea\cite{mcbride:motive}.
+
+\begin{agdacode}{\it Equivalencia heterogénea} \label{code:heterequiv}
+
+  \ExecuteMetaData[latex/Agda.tex]{equivH}
+\end{agdacode}
+
+Observemos que el truco de esta definición es engañar al chequeador de tipos del lenguaje, promulgando definir la equivalencia entre elementos de tipos distintos, para luego definir como constructor a la misma cláusula de reflexividad que la equivalencia de Martin Löf, donde los tipos son el mismo.
+
+El lema de congruencia para funciones de tipo dependiente es ahora posible de ser probado, como se muestra a continuación
+
+\begin{agdacode}{\it Lema de congruencia heterogénea}
+
+\ExecuteMetaData[latex/Agda.tex]{cong}
+\end{agdacode}
+
+Podemos incluso probar una versión aún más general de congruencia: cuando las funciones a aplicar a cada lado de la equivalencia tienen tipos definicionalmente diferentes. Se prueba dicho lema más general en el código \AgdaFunction{dcong}. 
+
+\begin{agdacode}\label{code:dcong}{\it Lema de congruencia heterogénea general}
+  
+\ExecuteMetaData[latex/ExtrasToPrint.tex]{dcong}
+\end{agdacode}
+
+Otro ejemplo de lema posible de probar gracias a la introducción de la equivalencia heterogénea es aquél que nos ayuda con la prueba de la igualdad de para sumas dependientes. Para demostrar que un elemento de tipo \AgdaDatatype{$\Sigma$} $A$ $B$ es equivalente a otro de tipo \AgdaDatatype{$\Sigma$} $A'$ $B'$, nos basta probar que son equivalentes sus primeras componentes y el tipo y valor de las segundas, como se muestra en el código \ref{code:dSumEq}.
+
+\begin{agdacode}{\it Equivalencia de habitantes de sumas dependientes}\label{code:dSumEq}
+
+\ExecuteMetaData[latex/ExtrasToPrint.tex]{dSumEq}
+\end{agdacode}
+
+\vspace{2ex}
+
+Al igual que hicimos para la equivalencia proposicional, podemos proveer una instancia del record \AgdaRecord{IsEquivalence} para el caso de la relación heterogénea, quedando así demostrado que dicha relación es en efecto una relación de equivalencia.
+
+\ExecuteMetaData[latex/Agda.tex]{isEquivHeter}
+
+Las pruebas de la validez de la simetría y transitividad son similares a las correspondientes al caso proposicional y se exponen a continuación:
+
+\ExecuteMetaData[latex/Agda.tex]{sym}
+
+\ExecuteMetaData[latex/Agda.tex]{trans}
+
+\section{Extensionalidad}
+
+Otro caso que nos interesa examinar es aquel caso donde se quiera probar equivalencia de funciones.
+Luego de haber definido \AgdaFunction{cong} para la equivalencia heterogénea, queda claro que es posible probar que $f x \cong f y$ siendo $x\cong y$. En un problema nos encontramos cuando queremos probar lo mismo sobre las funciones en lugar de los argumentos. Es decir, probar que $f \cong g$ a partir de saber que para todo $x$ vale $f x \cong g\; x$.
+En el marco de la teoría de tipos de Agda no nos será posible demostrar esto y nos será necesario apelar al axioma de extensionalidad. Es decir, aquél que indica que dos funciones son iguales si siempre lo son al ser aplicadas al mismo argumento. Esto no es más ni menos que la definición de la igualdad entre funciones, lo que implica que resulte sensato agregar dicha propiedad en forma de axioma.
+
+En Agda un axioma se expresa con la palabra reservada \AgdaKeyword{postulate}.
+El siguiente código expone los postulados de extensionalidad para funciones con argumento explícito (\AgdaFunction{ext}) e implícito (\AgdaFunction{iext}):
+\begin{agdacode}\label{code:ext}{\it Axiomas de extensionalidad}
+
+  
+\ExecuteMetaData[latex/ExtrasToPrint.tex]{ext}
+\ExecuteMetaData[latex/ExtrasToPrint.tex]{iext}
+\end{agdacode}
+
+Con el objetivo de ver en acción estos postulados, demostraremos que la función \AgdaFunction{suma} es equivalente a su versión infija expresada en el código \ref{code:sumaInfija}
+\begin{agdacode}\label{code:sumaInfija}{\it Versión infija de la suma de naturales}
+
+\ExecuteMetaData[latex/Agda.tex]{sumaInfija}
+\end{agdacode}
+
+Probamos primero el requerimiento del postulado de extensionalidad, es decir, que las funciones son equivalentes al ser aplicadas a los mismos argumentos:
+
+\ExecuteMetaData[latex/Agda.tex]{sumaEquivExt}
+
+Finalmente, probamos su equivalencia, haciendo uso del postulado de extensionalidad para cada uno de sus argumentos:
+
+\ExecuteMetaData[latex/Agda.tex]{sumaEquiv}
+
+El siguiente postulado de extensionalidad es un poco más general que el presentado previamente, dado que permite que las funciones que se desean probar equivalentes tengan tipos definicionalmente distintos, aunque proposicionalmente equivalentes.
+
+\begin{agdacode}\label{code:dext}{\it Extensionalidad dependiente general }
+
+\ExecuteMetaData[latex/ExtrasToPrint.tex]{dext}
+\end{agdacode}
+
+
+
+%%%%%%% UNIVERSOS %%%%%%%
+
+\section{Universos} \label{universos}
+
+
+En esta sección introduciremos la noción de universo con el objetivo de dar fundamento a la temática principal de este trabajo, que consiste ni más ni menos que en un universo en particular, el universo de containers. Comenzaremos con la definición conceptual, para luego exponer ejemplos que motivarán las ventajas y posibles usos de estas construcciones.
+
+La posibilidad de crear universos es una característica que poseen los lenguajes con tipos dependientes de la que carecen lenguajes con tipos simples.   
+En términos generales, un universo de tipos es simplemente una colección de tipos, cerrada bajo ciertos constructores.
+
+Un claro ejemplo de universo de tipos ya fue presentado en la introducción y vuelto a mencionar en la sección \ref{agda:data}. Para evitar una paradoja similar a la paradoja de Russell, los tipos de Agda se encuentran subdivididos en universos. Todo tipo pertenece a un universo en particular. Los tipos básicos, construidos de forma inductiva, pertenecen al primer nivel, \AgdaDatatype{Set$_0$} (o simplemente \AgdaDatatype{Set}). Por su parte, \AgdaDatatype{Set$_0$} y los tipos construidos a partir de él, tienen tipo \AgdaDatatype{Set$_1$}. Es así como se forma la siguiente jerarquía de universos: 
+
+\sangrar
+\AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} : \AgdaDatatype{Set$_{2}$} : \AgdaDatatype{Set$_{3}$} \ldots
+
+
+Utilizando notación Agda, diremos que un {\it universo} es un tipo $U$ y una función de interpretación o {\it extensión} $\agdaExt{$\_$}$ tal que
+$$\begin{array}{rl}
+  U\, & : \, \AgdaDatatype{Set}\\
+  \agdaExt{$\_$}\, & : \,  U \to \AgdaDatatype{Set}
+\end{array}$$
+
+
+La programación genérica tiene como objeto la construcción de algoritmos que actúen de forma genérica sobre un conjunto determinado de tipos. Pero el problema que surge al querer programar genéricamente, es que no podemos hacer pattern matching sobre el tipo \AgdaDatatype{Set}. Por otra parte, el conjunto de tipos sobre el que se pretende trabajar es muchas veces un subconjunto de todos los tipos posibles. Podemos obtener ese subconjunto de forma precisa a partir de definir un universo de códigos sintácticos, uno por cada tipo a incluir, y una función de interpretación que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
+
+A continuación vemos un ejemplo ilustrativo sencillo, un universo que contiene a los booleanos y a los números naturales.
+
+\begin{agdacode}\label{code:codes}{\it Códigos para la definición del universo de tipos naturales y booleanos }
+
+\ExecuteMetaData[latex/Universos.tex]{codes}
+\end{agdacode}
+
+Es posible definir funciones genéricas sobre un universo simplemente haciendo pattern matching en los códigos sintácticos. Definimos la extensión del universo de naturales y booleanos en el código \ref{code:codesextension}.
+
+
+\begin{agdacode}\label{code:codesextension}{\it Extensión del universo de los tipos naturales y booleanos }
+
+\ExecuteMetaData[latex/Universos.tex]{extension}
+\end{agdacode}
+
+Podemos generalizar esta definición para incluir también la posibilidad de definir universos de constructores de tipos. Observemos el siguiente ejemplo de universo que nuclea a los constructores de listas y de árboles\footnote{Ver códigos \ref{list} y \ref{code:tree} para la definición de los elementos \AgdaDatatype{List} y \AgdaDatatype{Tree}}
+
+\begin{agdacode}\label{code:codes2}{\it Códigos para la definición del universo de constructores }
+
+\ExecuteMetaData[latex/Universos.tex]{codes2}
+\end{agdacode}
+
+\begin{agdacode}\label{code:codesextension2}{\it Extensión del universo de constructores }
+
+\ExecuteMetaData[latex/Universos.tex]{extension2}
+\end{agdacode}
+
+
+
+
+

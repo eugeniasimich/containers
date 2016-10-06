@@ -1,0 +1,27 @@
+% \usepackage[usenames,dvipsnames]{pstricks}
+% \usepackage{epsfig}
+% \usepackage{pst-grad} % For gradients
+% \usepackage{pst-plot} % For axes
+% \usepackage[space]{grffile} % For spaces in paths
+% \usepackage{etoolbox} % For spaces in paths
+% \makeatletter % For spaces in paths
+% \patchcmd\Gread@eps{\@inputcheck#1 }{\@inputcheck"#1"\relax}{}{}
+% \makeatother
+% % User Packages:
+% 
+% 
+\psscalebox{1.0 1.0} % Change this value to rescale the drawing.
+{
+\begin{pspicture}(0,-1.5736078)(5.37,1.5736078)
+\rput[bl](0.0,0.21360779){$[\bigcirc , \bigcirc, \bigcirc]$}
+\pscircle[linecolor=black, linewidth=0.02, linestyle=dashed, dash=0.17638889cm 0.10583334cm, dimen=middle](4.4,0.21360779){0.96}
+\rput[bl](4.32,1.3336078){$X$}
+\rput[bl](4.08,-0.50639224){$x_1$}
+\rput[bl](4.08,0.37360778){$x_2$}
+\rput[bl](4.72,-0.026392212){$x_3$}
+\psbezier[linecolor=black, linewidth=0.02, arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.0]{->}(0.4,0.21360779)(0.64,-0.82639223)(2.4,-2.1863923)(4.0,-0.5863922119140625)
+\psbezier[linecolor=black, linewidth=0.02, arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.0]{->}(0.8,0.21360779)(0.98105264,-0.7463922)(2.1894736,-1.3863922)(4.0,0.2136077880859375)
+\psbezier[linecolor=black, linewidth=0.02, arrowsize=0.05291667cm 2.0,arrowlength=1.4,arrowinset=0.0]{->}(1.2,0.21360779)(1.3810526,-0.7463922)(3.6,-2.5863922)(4.8,-0.1863922119140625)
+\end{pspicture}
+}
+

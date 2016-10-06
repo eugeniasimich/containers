@@ -1,0 +1,14 @@
+
+\begin{abstract}
+Muchos de los tipos de datos más utilizados comparten la característica de poder ser pensados como una serie de esqueletos, o plantillas, para contener otros datos. Las listas, los árboles, los streams, son ejemplos de tipos de datos de esta clase. Esta propiedad que los integra permite analizarlos de forma segregada: por una lado se encuentra su estructura y por otro la información a almacenar. Los {\it containers} se presentan como una buena alternativa de representación de esta clase de constructores de tipos, explotando esta posibilidad de separar estructura de contenido y proveyendo la posibilidad de estudiar la estructura de forma aislada.
+
+Con el fin principal de evitar la reescritura de código, el paradigma conocido como de {\it programación genérica} se dedica a la construcción de programas definidos de forma abstracta sobre un conjunto de tipos de datos. Es decir, en lugar de escribir algoritmos que trabajen sobre una estructura en particular, se definen sobre un conjunto más amplio de tipos de datos.
+La delimitación y posterior inspección de este conjunto es una problemática clave a resolver a la hora de programar genéricamente.
+Existe una gran variedad de lenguajes de programación donde las herramientas para cumplir este objetivo son provistas de antemano. Cuando este no es el caso, o cuando trabajamos teóricamente, la construcción de universos es un recurso útil y válido.
+
+Desde este punto de vista, los containers se presentan como un universo particular donde es posible razonar de forma abstracta y programar genéricamente con el mencionado conjunto de constructores de tipos.
+
+Esta tesina presenta una implementación del universo definido por los containers y una serie de propiedades interesantes acerca de ellos en el lenguaje de programación {\it Agda}. Se dará a su vez pruebas formales del cumplimiento de estas propiedades, extendiendo así las bibliotecas de containers existentes a la fecha.
+Este trabajo explota y reúne principalmente dos propiedades interesantes de los lenguajes con tipos dependientes como Agda. Por un lado, la posibilidad de construir de forma muy precisa universos que limiten la expresividad de los programas de una forma útil, dejando afuera comportamientos no deseados y posibilitando la programación genérica. Por otro lado, hace uso de la posibilidad de utilizar el mismo lenguaje para construir pruebas de propiedades sobre los programas que escribimos. En un lenguaje de tipos dependientes, implementar y demostrar resultan ser la misma tarea.
+\end{abstract}
+

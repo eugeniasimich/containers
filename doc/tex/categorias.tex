@@ -1,0 +1,274 @@
+\chapter{Teor\'ia de Categor\'ias} \label{cat}
+
+\begin{epigraphs}
+\qitem{Otra ventaja que se buscaba con este invento era que sirviese como idioma universal para todas las naciones civilizadas, cuyos muebles y útiles son, por regla general, iguales o tan parecidos, que puede comprenderse fácilmente cuál es su destino. Y de este modo los embajadores estarían en condiciones de tratar con príncipes o ministros de Estado extranjeros para quienes su lengua fuese por completo desconocida.}{Los Viajes de Gulliver\\ Jonathan Swift}
+\end{epigraphs}
+
+Una primera aproximación a definir de qué trata la teoría de categorías es, en pocas palabras, la de álgebra abstracta de funciones abstractas~\cite{Awodey}. 
+En términos epistemológicos se puede decir que la teoría de categorías se ha constituido a partir de un giro copernicano. Donde los conjuntos y sus elementos eran el foco de atención, ahora lo son las relaciones entre ellos.
+
+Este cambio en el punto de vista vino acompañado de un nuevo lenguaje que posibilita hablar de cada construcción en términos más abstractos, constituyéndose así en una buena herramienta de entendimiento común. 
+Así como la teoría de álgebras ha sabido instaurar su propio lenguaje basado en tuplas equipadas con reglas, o la teoría de conjuntos o de grafos instauraron una jerga propia, la teoría de categorías es un lenguaje en sí mismo; lenguaje que promueve un punto de vista distinto para analizar muchas construcciones de diversas ramas de la matemática, la lógica, las ciencias de la computación o la física teórica, como para mencionar algunas.  
+
+
+La razón por cual resulta interesante hablar en el lenguaje de las categorías es la fuerte conexión que encontramos entre dicha teoría, la teoría de tipos y el lambda cálculo, subyacentes a los lenguajes funcionales, Agda en particular. Una forma de percibir a grandes rasgos que dicha conexión no es casual, es observar que el lambda cálculo también hace énfasis en las funciones, es un cálculo de funciones que instaura reglas formales para su manipulación. 
+
+En esta sección expondremos el vocabulario básico de la teoría de categorías. A diferencia de lo que podríamos encontrar en cualquier libro introductorio al tema, secundaremos la exposición de cada nuevo concepto con formalizaciones en Agda y ejemplos que apunten a una mayor comprensión de las secciones subsiguientes. La formalización está basada en la realizada por Altenkirch {\it et al}~\cite{relativemonads}.  
+\newpage
+
+\section{Categoría}
+
+\begin{definition} Una {\it categoría} $\C$ consiste de los siguientes elementos \label{def:cat}
+  \begin{itemize}
+  \item Una colección de {\bf objetos}, denominada $\Obj{\C}$.
+  \item Por cada par de objetos $A, B$, un conjunto $\Hom{A}{B}{\C}$, a cuyos miembros denominamos {\bf morfismos} de $A$ en $B$.
+    En general notaremos $\flecha{A}{f}{B}$ o bien $f : A \to B$ a la sentencia $f \in \Hom{A}{B}{\C}$.
+
+    Para un morfismo $\flecha{A}{f}{B}$ decimos que $A$ es el {\it dominio} y $B$ el {\it codominio} de $f$.
+  \item Por cada objeto $A$, un morfismo $\flecha{A}{\id{A}}{A}$ denominado {\bf identidad} de $A$.
+  \item Por cada terna de objetos $A, B, C$ una {\bf ley de composición} que asocia a cada par de morfismos $\flecha{A}{f}{B}, \flecha{B}{g}{C}$ un morfismo $\flecha{A}{g\circ f}{C}$ denominado composición de $g$ con $f$.
+  \end{itemize}
+  satisfaciendo las leyes:
+  \begin{itemize}\renewcommand{\labelitemi}{$\star$}
+    \item {\bf Leyes de identidad:} Dado un morfismo $\flecha{A}{f}{B}$, se cumple: $$\id{B} \circ f = f \qquad f \circ \id{A} = f$$
+    \item {\bf Ley de asociatividad:} Dados morfismos $\flecha{A}{f}{B}, \flecha{B}{g}{C}$ y $\flecha{C}{h}{D}$ se cumple:
+    $$h \circ (g\circ f) = (h \circ g) \circ f$$
+  \end{itemize}
+  
+\end{definition}
+
+\hspace{1ex}
+\begin{example} \label{ex:set}
+Un ejemplo importante de categoría, debido a su ubicuidad y a ser fuente de intuición a lo largo del trabajo, es el de la categoría cuyos objetos son conjuntos y cuyos morfismos son funciones totales. La llamamos $\Set$. Los morfismos identidad son las funciones identidad y la composición de morfismos es la composición de funciones. Para completar la presentación de esta categoría, resta mostrar que las leyes de identidad y asociatividad se cumplen.
+\end{example}
+
+\begin{example} \label{ex:op}
+Otro ejemplo que nos resultará de utilidad en las próximas secciones es el de la categoría {\it dual}, que se obtiene de invertir todos los morfismos. Es decir, dada una categoría $\C$, su categoría dual $\C^{op}$ tiene los mismos objetos que $\C$ y por cada morfismo $f \in \Hom{A}{B}{\C}$, un morfismo\\ $f \in \Hom{B}{A}{\C^{op}}$.
+\end{example}
+
+\hspace{1ex}
+Para expresar leyes en teoría de categorías, es usual utilizar diagramas en forma de grafos, donde los objetos de la categoría involucrados se representan como vértices del grafo y los morfismos como aristas. Por ejemplo, dados los objetos $A,B,C$ y los morfismos $\flecha{A}{f}{B}$ y $\flecha{B}{g}{C}$ en una categoría $\C$, sabemos que es posible componerlos obteniendo un morfismo $g \circ f$. En forma de diagrama:
+
+  \begin{center}
+  \xymatrixcolsep{3pc} \xymatrixrowsep{3pc}
+  \centerline{\xymatrix{ 
+      A \ar[r]^{f} \ar[dr]_{g\circ f}  & B \ar[d]^{g} \\
+      & C }}
+  \end{center}
+
+  Diremos que un diagrama es {\it conmutativo} cuando para cada par de vértices $A, B$ del diagrama, todos los caminos posibles entre $A$ y $B$ son iguales.
+
+  Por ejemplo, el siguiente diagrama expresa la ley de asociatividad expuesta en la definición \ref{def:cat}.
+
+  \begin{center}
+  \xymatrixcolsep{3pc} \xymatrixrowsep{3pc}
+  \centerline{\xymatrix{ 
+      A \ar[r]^{f} \ar[dr]_{g\circ f} \ar@/_4pc/[drr]_{h\circ (g \circ f)} \ar@/^4pc/[drr]^{(h\circ g) \circ f} & B \ar[d]^{g} \ar[dr]^{h \circ g}&\\
+      & C \ar[r]_{h} & D}}
+  \end{center}
+
+\subsection{Formalización}
+A continuación exponemos el concepto de categoría formalizado en Agda, como un tipo de datos en forma de record.  
+Como ya hemos expuesto en la sección dedicada a presentar el lenguaje Agda%\footnote{Ver sección \ref{prop}, código \ref{code:isequiv}}
+, es posible representar estructuras algebraicas abstractas como tipos de datos que incluyen no sólo el conjunto portador del álgebra sino también las operaciones y leyes que todos ellos deben cumplir. En el caso de las categorías, tendremos el tipo de los objetos \AgdaField{Obj} y para cada par de objetos $A$ y $B$, el conjunto de morfismos con origen en $A$ y destino en $B$, \AgdaField{Hom} $A$ $B$. Además, contamos con un morfismo identidad \AgdaField{iden} para cada objeto y un operador de composición para cada par de morfismos posibles de ser compuestos. Finalmente, deben cumplirse las dos leyes de identidad \AgdaField{idl} e \AgdaField{idr} y la ley de asociatividad \AgdaField{ass}.
+
+\begin{agdacode}{\it Formalización en Agda del concepto de categoría}
+\label{code:category}
+
+\ExecuteMetaData[latex/Cat.tex]{category}
+\end{agdacode}
+
+Los ejemplos \ref{ex:set} y \ref{ex:op} expuestos informalmente los podemos expresar como habitantes del tipo de datos \AgdaDatatype{Cat} y así garantizar formalmente que dichas construcciones son en efecto categorías.
+En el código \ref{code:cat:set} vemos la categoría $\Set$ de conjuntos y funciones totales. Observemos que ahora sí exponemos las demostraciones de las leyes que requiere la definición de categoría. En este caso, las pruebas resultan triviales.
+
+\begin{agdacode}{\it Categoría $\Set$ de conjuntos y funciones}\label{code:cat:set}
+  
+\ExecuteMetaData[latex/CatSet.tex]{set}
+\end{agdacode}
+
+En el código \ref{code:cat:op} se muestra la construcción de la categoría dual de una categoría dada $\C$. Podemos ver que tanto los objetos como las identidades y sus leyes se mantienen iguales a la categoría $\C$, mientras que los morfismos se revierten, las composiciones se espejan y la ley de asociatividad se prueba por simetría a partir de la asociatividad en $\C$.
+
+
+\begin{agdacode}{\it Categoría dual}\label{code:cat:op}
+  
+\ExecuteMetaData[latex/Cat.tex]{op}
+\end{agdacode}
+
+\section{Isomorfismo}
+
+\begin{definition}
+  Un morfismo $\flecha{A}{f}{B}$ en una categoría $\C$ es un {\it isomorfismo} siempre que exista un morfismo $\flecha{B}{\,g\,}{A}$ de $\C$ que satisfaga $$f \circ g = \id{B} \qquad g \circ f = \id{A} $$
+  Si existe un isomorfismo entre dos objetos $A, B$ de una categoría, decimos que son {\it isomorfos} y notamos $A \simeq B$.
+\end{definition}
+\subsection{Formalización}
+
+\begin{agdacode}\hspace{3ex}\label{code:cat:iso}
+  
+\ExecuteMetaData[latex/Iso.tex]{iso}\\
+Es decir, un morfismo $f$ es un isomorfismo entre los objetos $A$ y $B$ si existe un morfismo \AgdaField{inverse}, tal que las diversas composiciones resultan ser las respectivas identidades. Este último requerimiento se expresa en el campo \AgdaField{proof}, instancia del record \AgdaRecord{isInverse}, definido por el siguiente código:
+
+\ExecuteMetaData[latex/Iso.tex]{isInverse}
+
+\end{agdacode}
+
+
+\section{Funtor}
+
+Si hubiéramos elegido utilizar un lenguaje netamente algebraico y haber descripto a las categorías como un álgebra con dos portadores, dos operaciones y tres leyes, podríamos decir que esta sección se dedica a definir los homomorfismos de categorías. Definiremos a continuación el concepto de funtor como aquella operación entre categorías que preserva su estructura interna.
+
+\begin{definition}
+  Sean las categorías $\mathscr{C}$ y $\mathscr{D}$. Un {\it funtor} $F$ de $\mathscr{C}$ a $\mathscr{D}$, que notamos $F : \mathscr{C} \to \mathscr{D}$ consiste de:
+\begin{itemize}
+\item Un mapeo que asigna a cada objeto $A$ de $\mathscr{C}$ un objeto $F(A)$ de $\mathscr{D}$.
+\item Un mapeo que asigna a cada morfismo $\flecha{A}{f}{B}$ de $\mathscr{C}$ un morfismo\\ $\flecha{F(A)}{F(f)}{F(B)}$ de $\mathscr{D}$.
+\end{itemize}
+satisfaciendo las leyes:
+\begin{itemize}\renewcommand{\labelitemi}{$\star$}
+    \item {\bf Ley de preservación de la identidad:} Por cada objeto $A$ de $\mathscr{C}$ tenemos la siguiente igualdad entre morfismos en $\mathscr{D}$: $$F(\id{A}) = \id{F(A)}$$
+    \item {\bf Ley de preservación de la composición:} Por cada par de morfismos\\ $\flecha{A}{f}{B}, \flecha{B}{g}{C}$ de $\mathscr{C}$, se cumple la siguiente equivalencia:$$F(g \circ f) = F(g) \circ F(f)$$
+  \end{itemize}
+\end{definition}
+
+En términos gráficos, podemos decir que un funtor $F : \C \to \mathscr{D}$ hace conmutar al siguiente diagrama:
+
+\begin{tabular}{l c c r}
+  &\xymatrixcolsep{4pc} \xymatrixrowsep{4pc}
+  \xymatrix{ 
+      A \ar@`{(-10,10),(10,10)}^{\id{A}} \ar[r]^{f} \ar[dr]_{g\circ f}  & B \ar[d]^{g} \\
+      & C } 
+  &
+  \xymatrixcolsep{4pc} \xymatrixrowsep{4pc}  \xymatrix{ 
+      F(A)\ar@`{(-10,10),(10,10)}^{F(\id{A}) = \id{F(A)}} \ar[r]^{F(f)} \ar[dr]_{F(g\circ f)=F(g)\circ F(f) }  & F(B) \ar[d]^{F(g)} \\
+      & F(C) }  & \\
+  $\C$ & & & $\mathscr{D}$
+\end{tabular}
+
+\vspace{2ex}
+
+Un ejemplo trivial de funtor es el del funtor identidad, que mapea cada objeto y cada morfismo de la categoría, a sí mismo. Es decir, ambos mapeos resultan ser las identidades sobre objetos y morfismos. Trivialmente cumple con las leyes de preservación. Por otro lado, dados dos funtores $F : \mathscr{A} \to \mathscr{B}$ y $G : \mathscr{B} \to \mathscr{C}$, es posible definir la composición de funtores $G \circ F : \mathscr{A} \to \C$, componiendo individualmente cada mapeo. Podemos intuir de estas conclusiones que las categorías y los funtores forman una nueva categoría. El problema que tenemos aquí es análogo a la famosa paradoja de Russell, ¿esta nueva categoría se tiene por objeto a sí misma? ¿podríamos entonces construir la categoría de las categorías que no se contienen a sí mismas?. Para evitar este problema, seguimos el mismo criterio que se ha tomado en teoría de conjuntos:
+
+\begin{definition} Una categoría $\C$ es {\it pequeña} cuando la colección $|\C|$ de objetos es un conjunto.
+\end{definition}
+
+\begin{example} La categoría {\bf Cat} tiene por objetos a las categorías pequeñas y por morfismos a los funtores. 
+\end{example}
+
+  
+\begin{example} \label{ex:hom0}
+  Dado un objeto $A$ en una categoría $\C$, el funtor $Hom_{\C}(A,\_)$ desde la categoría $\C$ hacia la categoría $\Set$:
+
+  \begin{itemize}
+  \item mapea cada objeto $B$ de $\C$ hacia el conjunto de morfismos $Hom_{\C}(A,B)$
+  \item mapea cada morfismo $\flecha{B}{f}{B'}$ hacia la función de pre-composición $$f \circ \_ : Hom_{\C}(A,B) \to Hom_{\C}(A,B')$$
+  \end{itemize}
+\end{example}
+
+
+\begin{definition}
+  Un funtor $F$ se dice {\it contravariante} si revierte la dirección de los morfismos, es decir, mapea cada $\flecha{A}{f}{B}$ a un morfismo $\flecha{F(B)}{F(f)}{F(A)}$.
+
+  En oposición, un funtor que respeta el sentido de los morfismos se denomina {\it covariante}.
+
+  En lugar de presentar a un funtor contravariante $F : \C \to \mathscr{D}$, consideraremos que los funtores son siempre covariantes, y diremos $F : \C^{op} \to \mathscr{D}$
+  
+\end{definition}
+
+
+\begin{example} \label{ex:hom1}
+  Similarmente al ejemplo \ref{ex:hom0}, dado un objeto $B$ en una categoría $\C$, el funtor $Hom_{\C}(\_,B) : \C^{op} \to \Set$
+
+  \begin{itemize}
+  \item mapea cada objeto $A$ de $\C$ hacia el conjunto de morfismos $Hom_{\C}(A,B)$
+  \item mapea cada morfismo $\flecha{A}{f}{A'}$ de la categoría dual hacia la función de post-composición $$\_ \circ f : Hom_{\C}(A,B) \to Hom_{\C}(A',B)$$
+  \end{itemize}
+\end{example}
+
+\subsection{Formalización} En el código \ref{code:functor} podemos observar la implementación en Agda del concepto de funtor. Los campos \AgdaField{FObj} y \AgdaField{FHom} son los respectivos mapeos entre objetos y morfismos. Los otros campos expresan las leyes de preservación de las identidades y composiciones.
+
+\begin{agdacode}{\it Formalización del concepto de funtor en Agda} \label{code:functor}
+
+\ExecuteMetaData[latex/Fun.tex]{fun}
+\end{agdacode}
+
+
+\begin{agdacode}\label{code:hom1}Formalizamos el funtor expuesto en el ejemplo \ref{ex:hom1} en Agda. Lo llamamos \AgdaFunction{Hom$_{1}$}.
+
+  \ExecuteMetaData[latex/HomFunctor.tex]{hom1}
+\end{agdacode}
+
+Dada una categoría $\C$, llamamos {\it endofuntores} en $\C$ a los funtores $F : \C \to \C$.
+En $\Set$ son endofuntores ciertos constructores de tipos, como por ejemplo, el constructor de listas, expuesto en el siguiente ejemplo.
+Algunos ejemplos más de constructores de tipos son los árboles, los streams, las matrices.
+Estos constructores tienen una característica común que los convierte en funtores y es que son factibles de ser {\it mapeados}. Es decir, dada una función $f$ de un tipo $A$ en un tipo $B$, si tengo por ejemplo, un árbol con elementos de tipo $A$, puedo obtener fácilmente un árbol de elementos de tipo $B$ simplemente aplicando la función $f$ a cada elemento almacenado. Veremos en el siguiente ejemplo cómo esta función de mapeo se constituye en la componente de mapeo de morfismos del funtor, mientras que el constructor de datos en sí mismo será la componente del funtor de mapeo de objetos.
+
+\begin{example}El constructor de tipos \AgdaDatatype{List} se define en Agda como:
+
+  \ExecuteMetaData[latex/ListFun.tex]{list}
+
+Siempre que contemos con una lista de un tipo $A$ cualquiera, y una función $f$ que vaya de $A$ en $B$, podemos obtener una lista de elementos de $B$ simplemente mapeando $f$ sobre los elementos de la lista. A continuación se expone la implementación de dicha función de mapeo.
+
+\ExecuteMetaData[latex/ListFun.tex]{map}
+
+Nos encontramos frente a un funtor, el siguiente código muestra algunos detalles de su construcción. Las pruebas formales del cumplimiento de las leyes de funtor no se exponen pero se pueden encontrar en el código que acompaña a este trabajo.
+
+\ExecuteMetaData[latex/ListFun.tex]{listFun}
+\end{example}
+
+
+\section{Transformación natural}
+
+\begin{definition}
+  Sean $\mathscr{C}$ y $\mathscr{D}$ dos categorías y sean los funtores $F,G : \mathscr{C} \to \mathscr{D}$. Una {\it transformación natural} $\eta$ de $F$ hacia $G$, que notamos $\eta : F \Rightarrow G$ es una familia $(\flechaFlat{F(A)}{\eta_{A}}{G(A)})_{A \in \Obj{\C}}$ de morfismos de $\mathscr{D}$ indexada por objetos de $\mathscr{C}$ tal que la siguiente ley se satisface:
+  \begin{itemize}\renewcommand{\labelitemi}{$\star$}
+    \item {\bf Ley de naturalidad:} Por cada morfismo $\flecha{A}{f}{B}$ de $\mathscr{C}$ $$G(f) \circ \eta_{A} = \eta_{B} \circ F(f)$$
+  Es decir, el siguiente diagrama conmuta:
+  \begin{center}
+  \xymatrixcolsep{3pc} \xymatrixrowsep{3pc}
+  \centerline{\xymatrix{ 
+      F(A) \ar[r]^{\eta_{A}} \ar[d]_{F(f)} & G(A) \ar[d]^{G(f)}\\
+      F(B) \ar[r]_{\eta_{B}} & G(B) }}
+  \end{center}
+  \end{itemize}
+\end{definition}
+
+Llamamos {\it Nat}$(F,G)$ al conjunto de las transformaciones naturales entre dos funtores $F$ y $G$.
+
+\subsection{Formalización}
+
+\begin{agdacode}{\it Formalización del concepto de transformación natural en Agda} \label{code:nt}
+
+\ExecuteMetaData[latex/Fun.tex]{nt}
+\end{agdacode}
+
+
+\begin{definition} Sean los funtores $F,G : \mathscr{C} \to \mathscr{D}$. Decimos que una transformación natural $\eta : F \Rightarrow G $ es un {\it isomorfismo natural} cuando cada una de las componentes $\eta_{X}$ de la transformación es un isomorfismo en la categoría $\mathscr{D}$.
+\end{definition}
+
+\begin{agdacode}{\it Isomorfismo natural} \label{code:natiso}
+
+\ExecuteMetaData[latex/NaturalIsomorphism.tex]{natiso}
+\end{agdacode}
+
+  
+\section{Último ejemplo y motivación de Containers}
+Para concluir la sección dedicada a teoría de categorías, mostraremos formalmente cómo es posible formar una categoría que llamaremos {\bf Fun}, cuyos objetos son funtores y sus morfismos, transformaciones naturales.
+
+\begin{example}
+  
+\ExecuteMetaData[latex/Fun.tex]{funcat}
+
+Dadas dos categorías, podemos formar la categoría {\bf Fun}, cuyos objetos son los funtores entre ellas y cuyos morfismos, las transformaciones naturales. Para demostrar que {\bf Fun} es una categoría, debe existir para cada objeto, un morfismo identidad. En otras palabras, para cada funtor debe existir una transformación natural identidad. Además, siempre deberá existir la composición de transformaciones naturales aptas de ser compuestas. El morfismo identidad está dado por la construcción \AgdaFunction{natIden}, expuesta en el código \ref{code:natIden}. La composición de transformaciones naturales también será siempre posible, hecho reflejado en la construcción \AgdaFunction{natComp}, que no se expone, pero que puede encontrarse en el código asociado a esta tesina.
+
+\begin{agdacode}{\it Transformación natural identidad} \label{code:natIden}
+
+  \ExecuteMetaData[latex/Fun.tex]{natIden}
+\end{agdacode}
+
+La prueba de las identidades y asociatividad para la categoría {\bf Fun} recae en las identidades y asociatividad de la categoría de destino. Además, se hace uso de un lema que permite probar igualdad de dos transformaciones naturales a partir de la igualdad de la componente funcional de la transformación, puesto que la igualdad de pruebas es irrelevante. Los detalles del lema tampoco se exponen, pero podemos vislumbrar su utilidad a partir de observar su tipo, expuesto a continuación: 
+
+\ExecuteMetaData[latex/Fun.tex]{natEqt}
+
+\end{example}
+
+
+El objetivo primordial de presentar este ejemplo es dar pie a la construcción del universo de containers, que se analizará en la parte \ref{part:cont}. Los containers son una categoría en sí misma, pero representa --funtor de extensión mediante-- a una subcategoría de esta categoría de funtores. %Analizaremos en particular a los containers que representan endofuntores en $\Set$, pudiendo la formalización extenderse a endofuntores en cualquier categoría, siempre que tengan las cualidades de ser extensas y localmente cartesiana cerradas.

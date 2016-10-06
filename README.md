@@ -14,4 +14,4 @@ Supervisor: [Mauro Jaskelioff](http://www.fceia.unr.edu.ar/~mauro/)
   * [babelbib](https://www.ctan.org/pkg/babelbib) latex package
   * [catchfilebetweentags](https://www.ctan.org/pkg/catchfilebetweentags) latex package
 
-
+To tell the Makefile where your Agda standard library is, just copy the file `agda_stdlib.mk.example` to `agda_stdlib.mk`, filling in the path.

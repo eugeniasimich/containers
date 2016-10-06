@@ -16,5 +16,5 @@ En la carpeta `doc` se puede encontrar el texto completo de la tesina, compilabl
   * [babelbib](https://www.ctan.org/pkg/babelbib), paquete latex
   * [catchfilebetweentags](https://www.ctan.org/pkg/catchfilebetweentags), paquete latex
 
-
+Para indicar al Makefile la ubicación de la librería estándar de Agda, simplemente copiar el archivo `agda_stdlib.mk.example` en uno nuevo `agda_stdlib.mk`, completando correctamente la ruta al directorio.
 

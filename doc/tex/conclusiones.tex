@@ -1,0 +1,40 @@
+\chapter*{Conclusiones}
+\addcontentsline{toc}{chapter}{Conclusiones}
+
+La programación genérica tiene como objetivo primordial el reuso de código. Para lograrlo, apela a la construcción de programas cuyos argumentos puedan pertenecer no sólo a un tipo de datos particular, sino a un conjunto más amplio.   
+Una de las problemáticas principales a la que la programación genérica debe enfrentarse es la de poder definir adecuadamente su ámbito de abstracción. Es decir, para cumplir la meta de construir programas cuyo alcance sea mayor a un único tipo de dato y, en su lugar, funcione para un subconjunto de todos los tipos posibles, es imperativo poder definir con precisión este subconjunto e incluso poder inspeccionar cada habitante en forma individual.
+
+En los lenguajes de tipos dependientes podemos obtener ese subconjunto de forma precisa a partir de definir universos. Estos consisten simplemente en códigos sintácticos, uno por cada tipo a incluir, equipados con una función de extensión que dado un código asigna el tipo de datos que éste representa.
+
+En este trabajo se ha analizado un universo de constructores de tipos en particular, el universo de containers. Se comenzó con un análisis más bien intuitivo, introduciendo múltiples ejemplos. Se expuso la forma de reinterpretar cada container --a partir del cálculo de su extensión-- como un constructor de tipos funtorial, es decir, como un endofuntor en $\Set$.
+
+Se ha mostrado la forma en que los morfismos de containers se erigen como un universo para representar a las funciones paramétricas entre los tipos de datos generados por containers. Estos resultan ser ni más ni menos que las transformaciones naturales entre los mencionados endofuntores que los containers representan. Se probó que es posible componerlos y siempre existe el morfismo identidad.
+
+Debido a la fuerte relación existente entre la teoría de tipos, la lógica y la programación, dar un salto de abstracción y tomar un punto de vista más general, dejando de lado los detalles de la construcción, otorga sin lugar a dudas una garantía de legitimidad siempre apreciada. Este salto se realiza en el momento en que pasamos a analizar las construcciones en el marco de la teoría de categorías.
+
+La generalización es la esencia de las matemáticas. Muchas veces existen similitudes entre objetos de estudio a priori muy distantes, donde las analogías no se encuentran a simple vista. Abstraer, exponer las definiciones en términos categóricos puede implicar también que demostrar teoremas o encontrar propiedades sobre el objeto de estudio resulte más sencillo. En efecto, de no haber sido tomado este punto de vista categórico, no se hubiera llegado al resultado de que los containers cuentan con exponenciales y son aptos para modelar sistemas de alto orden. 
+
+Consecuentemente, se ha expuesto al universo de containers como una categoría denominada $\Cont$, cuyos objetos son containers y sus morfismos, los morfismos de containers. Además, se ha provisto una formalización completa en Agda de esta construcción.
+
+Como punto central del trabajo, se han presentado pruebas formales de que la categoría $\Cont$ cuenta con coproductos, productos, exponenciales, objetos inicial y terminal. 
+Particularmente, es una categoría cartesiana cerrada, hecho que la pone en correspondencia con sistemas como el lambda cálculo simplemente tipado o la lógica proposicional.
+
+Como se ha expuesto en las preliminares, gracias al isomorfismo de Curry-Howard y al requerimiento de que los programas sean totales, programar en Agda y demostrar teoremas son dos tareas en consonancia. Por lo tanto, haber provisto las pruebas formales de que cada uno de los objetos (producto, coproducto, etc) realmente lo son, según parámetros categóricos, implica haber extendido las librerías de containers existentes al día de hoy.
+
+
+\subsection*{Trabajos futuros}
+
+En esta tesina se ha presentado el universo de containers {\it de único argumento}. Es decir que se ha trabajado a partir de una definición de container donde, al momento de calcular su extensión, se obtienen endofuntores en $\Set$ de solamente un argumento. Un evidente posible camino a seguir es extender la formalización para incluir containers a más de un argumento.  
+
+Una vez realizado este avance, será posible también formalizar el hecho de que la categoría de containers es cerrada bajo álgebras iniciales y coálgebras finales.
+
+Otras extensiones que son posibles de realizarse a partir de las contribuciones de este trabajo son las referidas a la función de extensión, que lleva a cualquier habitante del universo de containers hacia un endofuntor en la categoría de conjuntos. Es posible generalizar dicha función para que resulte en un endofuntor en cualquier categoría extensa y localmente cartesiana cerrada. Además, propiedades como que dicho funtor es totalmente fiel pueden ser formalizadas y así garantizar que los morfismos de containers resulten ser, en efecto, todas y sólo todas las transformaciones naturales entre los definidos endofuntores. 
+
+En lo que se refiere al uso de las contribuciones realizadas, se espera que la biblioteca provista sirva como universo para programar genéricamente sobre un subconjunto acotado de tipos de datos, provistas las garantías de que dicho universo es cerrado bajo una serie interesante de construcciones. Por otro lado, se espera que sea un buen aporte como punto de partida para futuras formalizaciones. 
+
+
+
+
+
+
+
