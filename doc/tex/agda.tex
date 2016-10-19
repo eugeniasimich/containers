@@ -23,7 +23,7 @@ Comenzamos definiendo nombre, parámetros y signatura del nuevo tipo de datos, e
 
 \AgdaKeyword{data} {\it <nombre>} {\it <parámetros>} : {\it <signatura>} \AgdaKeyword{where}.
 
-En el siguiente ejemplo definimos al tipo \AgdaDatatype{Bool}, que carece de parámetros y cuyo tipo es \AgdaDatatype{Set}.
+En el siguiente ejemplo definimos al tipo \AgdaDatatype{Bool}, que carece de parámetros y cuya signatura es \AgdaDatatype{Set}; es decir, es un conjunto.
 
 \begin{agdacode}{\it Booleanos}\label{code:bool}
   
@@ -70,7 +70,7 @@ resulta muy sencillo garantizar la totalidad de las funciones, asegurando que la
 
 A diferencia de lenguajes funcionales como Haskell o ML, Agda no siempre puede inferir el tipo de las funciones, por lo que la declaración de signatura, i.e., la primera línea de la definición de \AgdaFunction{not} del código \ref{code:not}, no puede obviarse. 
 
-Otro tipo de pattern matching que permite la sintaxis de Agda es sobre funciones anónimas. Una función anónima es una función sin nombre. Por ejemplo, podemos definir la función identidad de forma anónima cómo $(\lambda\ x \to\ x)$. Es decir, dado un valor cualquiera, lo retornamos.
+Otro tipo de pattern matching que permite la sintaxis de Agda es sobre funciones anónimas. Una función anónima es una función sin nombre. Por ejemplo, podemos definir la función identidad de forma anónima cómo $(\lambda\ x \to x)$. Es decir, dado un valor cualquiera, lo retornamos.
 
 Pero como hemos observado antes, la función \AgdaFunction{idBool} en particular no observa nada del argumento. ¿Cómo haríamos si quisiéramos retornar algo en función del valor del argumento? Agda permite hacer pattern matching dentro de funciones anónimas utilizando llaves para englobar la función, y punto y coma para separar los casos. La versión anónima de \AgdaFunction{not} es entonces: $(\lambda\ \{ \AgdaInductiveConstructor{true} \to \AgdaInductiveConstructor{false} ; \AgdaInductiveConstructor{false} \to \AgdaInductiveConstructor{true} \})$.
 
