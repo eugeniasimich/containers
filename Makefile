@@ -15,7 +15,6 @@ quick:
 	$(LATEX) $(MAIN).tex
 
 clean:
-	rm -f *.aux *.out *.log *.dvi *.ps *.pdf *~ *.bbl *.blg *.toc *.tdo *.fdb_latexmk *.fls *.ptb
+	rm -f *.aux *.out *.log *.dvi *.ps *.pdf *~ *.bbl *.blg *.toc *.tdo *.fdb_latexmk *.fls *.ptb *.nav *.snm *.vrb
 	rm -f code/*.agdai
-	rm -f tex/*.aux
 	rm -fr latex/
