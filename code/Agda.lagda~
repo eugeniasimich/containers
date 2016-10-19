@@ -1,0 +1,240 @@
+\begin{code}
+module Agda where
+open import Data.Nat
+\end{code}
+
+%<*bool>
+\begin{code}
+data Bool : Set where
+  true   : Bool
+  false  : Bool
+\end{code}
+%</bool>
+
+%<*idbool>
+\begin{code}
+idbool : Bool → Bool
+idbool x = x
+\end{code}
+%</idbool>
+
+%<*eqbool>
+\begin{code}
+eqbool : Bool → Bool → Bool
+eqbool true true     = true
+eqbool false false   = true
+eqbool _ _           = false
+\end{code}
+%</eqbool>
+
+%<*nat>
+\begin{code}
+data Nat : Set where
+  zero  : Nat
+  suc   : Nat → Nat
+\end{code}
+%</nat>
+
+%<*idbool>
+\begin{code}
+idnat : Nat → Nat
+idnat x = x
+\end{code}
+%</idbool>
+
+%<*eqbool>
+\begin{code}
+eqnat : Nat → Nat → Bool
+eqnat zero zero        = true
+eqnat zero (suc _)     = false
+eqnat (suc _) zero     = false
+eqnat (suc x) (suc y)  = eqnat x y
+\end{code}
+%</eqbool>
+
+%<*id>
+\begin{code}
+id : ∀{X : Set} → X → X
+id x = x
+\end{code}
+%</id>
+
+%<*Ty>
+\begin{code}
+data Ty : Set where
+  n : Ty
+  b : Ty
+\end{code}
+%</Ty>
+
+%<*Tyext>
+\begin{code}
+⟦_⟧ : Ty → Set
+⟦ n ⟧ = Nat
+⟦ b ⟧ = Bool
+\end{code}
+%</Tyext>
+
+%<*eq>
+\begin{code}
+eq : (t : Ty) → ⟦ t ⟧ → ⟦ t ⟧ → Bool
+eq n = eqnat
+eq b = {!eqbool!} 
+\end{code}
+%</eq>
+
+
+
+%<*bot>
+\begin{code}
+data ⊥ : Set where
+\end{code}
+%</bot>
+
+%<*top>
+\begin{code}
+data ⊤ : Set where
+  tt : ⊤
+\end{code}
+%</top>
+
+%<*Fin>
+\begin{code}
+data Fin :  ℕ → Set where
+   zero  : {n : ℕ} → Fin (suc n)
+   suc   : {n : ℕ} → Fin n → Fin (suc n)
+\end{code}
+%</Fin>
+
+
+%<*not>
+\begin{code}
+not : Bool → Bool
+not true   = false
+not false  = true
+\end{code}
+%</not>
+
+%<*and>
+\begin{code}
+and : Bool → Bool → Bool
+and = λ  { true   y  → y
+         ; false  _  → false }
+\end{code}
+%</and>
+
+
+%<*empty>
+\begin{code}
+empty : ∀{X : Set} → ⊥ → X
+empty ()
+\end{code}
+%</empty>
+
+%<*sigma>
+\begin{code}
+record Σ (A : Set) (B : A → Set) : Set where
+  constructor _,_
+  field
+    proj₁ : A
+    proj₂ : B proj₁
+\end{code}
+%</sigma>
+
+%<*syntax>
+\begin{code}
+syntax Σ A (λ x → B) = Σ[ x ∈ A ] B
+\end{code}
+%</syntax>
+
+%<*times>
+\begin{code}
+data _×_ (X Y : Set) : Set where
+  _,_ : X → Y → X × Y
+\end{code}
+%</times>
+
+%<*proj1>
+\begin{code}
+proj₁ : ∀{X Y} → X × Y → X
+proj₁ (x , y) = x
+\end{code}
+%</proj1>
+
+%<*plus>
+\begin{code}
+data _⊎_ (X Y : Set) : Set where
+  inj₁ : X → X ⊎ Y
+  inj₂ : Y → X ⊎ Y
+\end{code}
+%</plus>
+
+
+%<*list>
+\begin{code}
+data List (X : Set) : Set where
+  nil :  List X
+  cons : X → List X  → List X 
+\end{code}
+%</list>
+
+%<*maybe>
+\begin{code}
+data Maybe (X : Set) : Set where
+  nothing : Maybe X
+  just    : X → Maybe X
+\end{code}
+%</maybe>
+
+%<*id>
+\begin{code}
+data Id (X : Set) : Set where
+  identity : X → Id X
+\end{code}
+%</id>
+
+
+%<*reader>
+\begin{code}
+data Reader (E : Set) (X : Set) : Set where
+  reader : (E → X) → Reader E X
+\end{code}
+%</reader>
+
+%<*stream>
+\begin{code}
+data Stream (A : Set) : Set where
+  _∷_ :  A → Stream A → Stream A
+\end{code}
+%</stream>
+
+%<*head>
+\begin{code}
+head : ∀{X} → List X → Maybe X
+head nil = nothing
+head (cons x l) = just x
+\end{code}
+%</head>
+
+\begin{code}
+data F (X : Set) : Set where
+  idF : X → F X
+\end{code}
+
+%<*map>
+\begin{code}
+map : ∀ {A B} → (A → B) → F A → F B
+\end{code}
+%</map>
+
+\begin{code}
+map f (idF x) = idF (f x)
+\end{code}
+
+%<*tree>
+\begin{code}
+data Tree (X : Set) : Set where
+  leaf : X → Tree X
+  node : Tree X → Tree X → Tree X
+\end{code}
+%</tree>
