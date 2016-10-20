@@ -16,6 +16,8 @@
 \usepackage{amsmath}
 \usepackage{latex/agda}
 \usepackage{unicode}
+\usepackage{amssymb}
+\usepackage{wasysym}
 
 \newcommand{\sangrar}{\hspace{3ex}}
 \newcommand{\saltar}{\vspace{1ex}}
@@ -71,13 +73,9 @@
     \ExecuteMetaData[latex/Agda.tex]{bool}
   \end{block}
   \pause
-  \Put(160,80){\includegraphics[scale=0.5]{img/bool}}
-  \pause
   \begin{block}{\framebox{naturales}}
     \ExecuteMetaData[latex/Agda.tex]{nat}
   \end{block}
-  \pause
-  \Put(160,70){\includegraphics[scale=0.5]{img/nat}}
 \end{frame}
 
 \subsection{algunos programas gen\'ericos}
@@ -190,7 +188,7 @@
   \begin{itemize}
   \item programemos funciones de mapeo...
     \begin{block}{...para listas}\ExecuteMetaData[latex/Agda.tex]{maplist}\end{block}
-    \pause \vspace{1cm}
+    \vspace{1cm}
     \begin{center}\hspace{-2cm}\includegraphics[scale=0.5]{img/maplist}\end{center}
   \end{itemize}
 \end{frame}
@@ -199,7 +197,7 @@
   \begin{itemize}
   \item programemos funciones de mapeo...
     \begin{block}{...para árboles}\ExecuteMetaData[latex/Agda.tex]{maptree}\end{block}
-    \pause \vspace{1cm}
+    \vspace{1cm}
     \begin{center}\includegraphics[scale=0.5]{img/maptree}\end{center}
   \end{itemize}
 \end{frame}
@@ -208,7 +206,7 @@
   \begin{itemize}
   \item programemos funciones de mapeo...
     \begin{block}{...para streams}\ExecuteMetaData[latex/Agda.tex]{mapstream}\end{block}
-    \pause \vspace{1.2cm}
+    \vspace{1.2cm}
     \begin{center}\hspace{-2cm}\includegraphics[scale=0.5]{img/mapstream}\end{center}
   \end{itemize}
 \end{frame}
@@ -218,7 +216,7 @@
   \begin{itemize}
   \item programemos funciones de mapeo...
     \begin{block}{...para maybe}\ExecuteMetaData[latex/Agda.tex]{mapmaybe}\end{block}
-    \pause \vspace{1.2cm}
+    \vspace{1.2cm}
     \begin{center}\hspace{-2cm}\includegraphics[scale=0.5]{img/mapmaybe}\end{center}
   \end{itemize}
 \end{frame}
@@ -228,7 +226,7 @@
 \begin{frame}{funtores = constructores mapeables}
   \begin{itemize}
   \item las listas, los árboles, los streams, entre otros constructores de tipos son \alert{mapeables}
-  \item llamaremos \alert{funtores} a estos constructores
+  \item llamaremos \alert{funtores} a estos constructores\\ {\small(deberán preservar identidades y composiciones)} 
   \item ¿podremos construir una \AgdaFunction{map} genérica?
   \end{itemize}
 \end{frame}
@@ -301,7 +299,7 @@
 
 \begin{frame}{containers}
   \begin{itemize}
-  \item representación alternativa de (algunos) constructores de tipos funtoriales (como las listas, los árboles, etc)
+  \item representación alternativa de (algunos) constructores de tipos (como las listas, los árboles, etc)
   \item segrega \alert{estructura} de \alert{contenido}
   \item las listas, los árboles, los streams, pueden ser vistos como \alert{contenedores} de otros datos
   \end{itemize}
@@ -344,7 +342,7 @@
   \item los containers representan la \alert{estructura} de los tipos de datos\\ ¿cómo hacer para llenar la estructura con contenido? \\
     \pause
     \alert{asignando valores a las posiciones}\pause
-  \item tomemos por ejemplo la lista $[a, b, c]$ de un tipo arbitrario $X$\\ \saltar\saltar
+  \item tomemos por ejemplo la lista $[\blacksquare, \newmoon, \blacklozenge]$ de tipo $X$\\ \saltar\saltar
     \includegraphics[scale=0.5]{img/listext.eps}
   \end{itemize}
 \end{frame}
@@ -367,41 +365,55 @@
     \end{center}
 \end{frame}
 
-
 \begin{frame}{volviendo a las listas originales}
   \begin{itemize}
     \item la función de extensión reconstruye el tipo original
       $$\AgdaFunction{$\llbracket$ } \AgdaFunction{cList } \AgdaFunction{ $\rrbracket$} \cong \AgdaDatatype{List}$$
       \pause
-    \item podemos también reconstruir las funciones:\\ \saltar
-        \ExecuteMetaData[latex/Container.tex]{listconstructors}
-        \Put(115,135){\includegraphics[scale=0.4]{img/empty2}}
+    \item ejemplo: la lista $[\, \blacksquare,\, \newmoon,\, \newmoon\, ]$ de símbolos se representa:\\\saltar
+      \ExecuteMetaData[latex/Container.tex]{l}
   \end{itemize}
+  \llenar
 \end{frame}
+
+
+\begin{frame}{volviendo a las listas originales}
+    \begin{itemize}
+    \item la función de extensión reconstruye el tipo original
+      $$\AgdaFunction{$\llbracket$ } \AgdaFunction{cList } \AgdaFunction{ $\rrbracket$} \cong \AgdaDatatype{List}$$
+    \item  o mejor, reconstruimos las funciones:\\ \saltar
+      \ExecuteMetaData[latex/Container.tex]{listconstructors}
+      \Put(115,135){\includegraphics[scale=0.4]{img/empty2}}
+      \pause
+    \item así la lista $[\, \blacksquare,\, \newmoon,\, \newmoon\, ]$ es simplemente:\\\saltar
+      \ExecuteMetaData[latex/Container.tex]{lprime}
+    \end{itemize}
+    \llenar
+\end{frame}
+
 
 \begin{frame}{más ejemplos}
   algunos containers triviales
   \begin{itemize}
-    \item el container identidad representa al funtor identidad:\\\saltar
-      \Put(155,0){\includegraphics[scale=0.45]{img/cid}}
-      \pause
-      \ExecuteMetaData[latex/Container.tex]{cId}
-      \pause
-      notemos que\\ \hspace{15ex}$\AgdaFunction{$\llbracket$ } \AgdaFunction{cId } \AgdaFunction{ $\rrbracket$}\ X \cong X$
-      \pause
-    \item el container constante ignora el argumento y siempre construye un tipo constante:\\
-      \Put(145,10){\includegraphics[scale=0.45]{img/ck}}      
-      \pause
-      \ExecuteMetaData[latex/Container.tex]{cK}
-      \pause
-      notemos que\\ \hspace{15ex}$\AgdaFunction{$\llbracket$ } \AgdaFunction{cK}\ A\ \AgdaFunction{ $\rrbracket$}\ X \cong A$
+  \item el container identidad representa al funtor identidad:\\\saltar
+    \begin{columns}[T,onlytextwidth]
+      \onslide<2->{ \column{0.6\textwidth} \ExecuteMetaData[latex/Container.tex]{cId}}
+      \onslide<1->{ \column{0.4\textwidth} \includegraphics[scale=0.45]{img/cid}}
+    \end{columns}
+    \onslide<3->{ entonces\\ \hspace{15ex}$\AgdaFunction{$\llbracket$ } \AgdaFunction{cId } \AgdaFunction{ $\rrbracket$}\ X \cong X$}
+  \onslide<4->{\item el container constante ignora el argumento y siempre construye un tipo constante:\\}
+    \begin{columns}[T,onlytextwidth]
+      \onslide<5->{ \column{0.6\textwidth} \ExecuteMetaData[latex/Container.tex]{cK}}
+      \onslide<4->{ \column{0.4\textwidth} \includegraphics[scale=0.45]{img/ck}}
+    \end{columns}
+    \onslide<6->{ entonces\\ \hspace{15ex}$\AgdaFunction{$\llbracket$ } \AgdaFunction{cK}\ A\ \AgdaFunction{ $\rrbracket$}\ X \cong A$}
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}{map de containers}
   \begin{itemize}
-  \item notemos que si $C$ es un container, \AgdaFunction{$\llbracket$} $C$ \AgdaFunction{$\rrbracket$} : \AgdaDatatype{Set} $\to$ \AgdaDatatype{Set}
+  \item si $C$ es un container, \AgdaFunction{$\llbracket$} $C$ \AgdaFunction{$\rrbracket$} : \AgdaDatatype{Set} $\to$ \AgdaDatatype{Set}
   \item \AgdaFunction{$\llbracket$} $C$ \AgdaFunction{$\rrbracket$} es nuevamente un constructor de tipos..
   \item ...pero, ¿es funtorial? ¿podremos construir una función \AgdaFunction{map} de containers?
     \pause
@@ -449,8 +461,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{ejemplo: cabeza de lista}
-  la función \AgdaFunction{head} de listas retorna el primer elemento de una lista no vacía\\
-  ¿cómo la expresamos en términos de los containers \AgdaFunction{cList} y \AgdaFunction{cMaybe}?\\
+  ¿cómo la expresamos la función \AgdaFunction{head} de listas en términos de funciones entre los containers \AgdaFunction{cList} y \AgdaFunction{cMaybe}?\\
   \pause
   recordemos:
   \begin{columns}[T,onlytextwidth]
@@ -466,7 +477,7 @@
     \begin{itemize}
     \item la forma \AgdaInductiveConstructor{zero} se transforma en \AgdaInductiveConstructor{false}
     \item la forma \AgdaInductiveConstructor{suc} $n$ se transforma en \AgdaInductiveConstructor{true}
-    \item lo que guarda la única posición de la forma \AgdaInductiveConstructor{true} proviene de la primera posición de la lista
+    \item lo que guarda la única posición de la forma \AgdaInductiveConstructor{true} proviene de la \emph{primera} posición de la lista
     \end{itemize}
 \end{frame}
 

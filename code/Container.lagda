@@ -121,12 +121,38 @@ cStream = Unit ◃ (λ {_ → Nat})
 \end{code}
 %</cstream>
 
-%<*Stream>
+%<*symbol>
 \begin{code}
-s : ⟦ cStream ⟧ Nat
-s = tt , (λ _ → 1)
+data Symbol : Set where
+  ■ : Symbol
+  ◆ : Symbol
+  ● : Symbol
 \end{code}
-%</Stream>
+%</symbol>
+
+%<*s>
+\begin{code}
+s : ⟦ cStream ⟧ Symbol
+s = tt , (λ _ → ◆)
+\end{code}
+%</s>
+
+%<*l>
+\begin{code}
+l : ⟦ cList ⟧ Symbol
+l = 3 , (λ  { zero                   → ■
+            ; (suc zero)             → ●
+            ; (suc (suc zero))       → ●
+            ; (suc (suc (suc ()))) })
+\end{code}
+%</l>
+
+%<*lprime>
+\begin{code}
+l' : ⟦ cList ⟧ Symbol
+l' = cons ■ (cons ● (cons ● nil))
+\end{code}
+%</lprime>
 
 
 %<*treeSh>
