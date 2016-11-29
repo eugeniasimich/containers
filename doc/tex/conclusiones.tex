@@ -2,11 +2,11 @@
 \addcontentsline{toc}{chapter}{Conclusiones}
 
 La programación genérica tiene como objetivo primordial el reuso de código. Para lograrlo, apela a la construcción de programas cuyos argumentos puedan pertenecer no sólo a un tipo de datos particular, sino a un conjunto más amplio.   
-Una de las problemáticas principales a la que la programación genérica debe enfrentarse es la de poder definir adecuadamente su ámbito de abstracción. Es decir, para cumplir la meta de construir programas cuyo alcance sea mayor a un único tipo de dato y, en su lugar, funcione para un subconjunto de todos los tipos posibles, es imperativo poder definir con precisión este subconjunto e incluso poder inspeccionar cada habitante en forma individual.
+Una de las problemáticas principales a la que la programación genérica debe enfrentarse es la de poder definir adecuadamente su ámbito de abstracción. Es decir, para cumplir la meta de construir programas cuyo alcance sea mayor a un único tipo de dato y, en su lugar, funcione para un subconjunto de todos los tipos posibles, es imperativo poder definir con precisión este subconjunto e incluso poder inspeccionar cada habitante de forma individual.
 
 En los lenguajes de tipos dependientes podemos obtener ese subconjunto de forma precisa a partir de definir universos. Estos consisten simplemente en códigos sintácticos, uno por cada tipo a incluir, equipados con una función de extensión que dado un código asigna el tipo de datos que éste representa.
 
-En este trabajo se ha analizado un universo de constructores de tipos en particular, el universo de containers. Se comenzó con un análisis más bien intuitivo, introduciendo múltiples ejemplos. Se expuso la forma de reinterpretar cada container --a partir del cálculo de su extensión-- como un constructor de tipos funtorial, es decir, como un endofuntor en $\Set$.
+En este trabajo se ha analizado un universo de constructores de tipos en particular, el universo de containers. Se comenzó con un análisis más bien intuitivo, introduciendo múltiples ejemplos. Se expuso la forma de reinterpretar cada container --a partir del cálculo de su extensión-- como un constructor de tipos funtorial, es decir, como un endofuntor en $\Set$. Vistos como universo, los containers resultan ser, entonces, un tipo de códigos sintácticos, siendo su extensión la función de interpretación de dichos códigos hacia los constructores de tipos que representan.  
 
 Se ha mostrado la forma en que los morfismos de containers se erigen como un universo para representar a las funciones paramétricas entre los tipos de datos generados por containers. Estos resultan ser ni más ni menos que las transformaciones naturales entre los mencionados endofuntores que los containers representan. Se probó que es posible componerlos y siempre existe el morfismo identidad.
 
@@ -17,7 +17,7 @@ La generalización es la esencia de las matemáticas. Muchas veces existen simil
 Consecuentemente, se ha expuesto al universo de containers como una categoría denominada $\Cont$, cuyos objetos son containers y sus morfismos, los morfismos de containers. Además, se ha provisto una formalización completa en Agda de esta construcción.
 
 Como punto central del trabajo, se han presentado pruebas formales de que la categoría $\Cont$ cuenta con coproductos, productos, exponenciales, objetos inicial y terminal. 
-Particularmente, es una categoría cartesiana cerrada, hecho que la pone en correspondencia con sistemas como el lambda cálculo simplemente tipado o la lógica proposicional.
+Particularmente, es una categoría cartesiana cerrada, hecho que la pone en correspondencia con sistemas como el lambda cálculo simplemente tipado o la lógica proposicional intuicionista.
 
 Como se ha expuesto en las preliminares, gracias al isomorfismo de Curry-Howard y al requerimiento de que los programas sean totales, programar en Agda y demostrar teoremas son dos tareas en consonancia. Por lo tanto, haber provisto las pruebas formales de que cada uno de los objetos (producto, coproducto, etc) realmente lo son, según parámetros categóricos, implica haber extendido las librerías de containers existentes al día de hoy.
 

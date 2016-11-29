@@ -17,18 +17,18 @@ Como ya hemos comentado en reiteradas ocasiones, si revertimos el sentido de los
 \subsection{Definición y formalización}
 \begin{definition}\label{cat:initial}
 
- Un objeto $\bot$ en una categoría $\C$ se dice {\it inicial} si por cada objeto $A$ de $\C$ hay exactamente un morfismo $\flecha{\bot}{}{A}$ desde él.
+ Un objeto $\bot$ en una categoría $\C$ se dice {\it inicial} si por cada objeto $A$ de $\C$ hay exactamente un morfismo $\flecha{\bot}{}{A}$ desde él, simbolizado ``!`''.
 \begin{center}
   \xymatrixcolsep{3pc}
   \centerline{\xymatrix{ 
-      \bot \ar@{-->}[r]^{!}  & A  }}
+      \bot \ar@{-->}[r]^{\rotatebox[origin=c]{-180}{$^{!}$}}  & A  }}
 \end{center}
 
 \end{definition}
 
 \begin{definition}\label{cat:term}
 
- Un objeto $\top$ en una categoría $\C$ se dice {\it terminal} si por cada objeto $A$ de $\C$ hay exactamente un morfismo $\flecha{A}{}{\top}$ hacia él.
+ Un objeto $\top$ en una categoría $\C$ se dice {\it terminal} si por cada objeto $A$ de $\C$ hay exactamente un morfismo $\flecha{A}{}{\top}$ hacia él, simbolizado ``!''.
 \begin{center}
   \xymatrixcolsep{3pc}
   \centerline{\xymatrix{ 

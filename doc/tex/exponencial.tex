@@ -59,16 +59,16 @@ funciones posibles. Por dicha razón, al conjunto de las funciones de $A$ hacia 
 En resumen, en la categoría $\Set$ de conjuntos y funciones, el objeto exponencial entre dos objetos $A$ y $B$ que denominamos $B^{A}$, es el conjunto de las funciones de $A$ en $B$. 
 
 Para empezar a pensar en las funciones hacia cada conjunto exponencial, consideremos las funciones $f(\_,\_) : A \times B \to C$.
-Al fijar un elemento $a \in A$ obtenemos una nueva función $f(a,\_) : B \to C$; en otras palabras, $f(a,\_) \in C^{B}$. Si hacemos nuevamente variar $a$ entre los elementos de $A$, obtenemos una nueva función que llamamos $\curry{f}$ tal que $$\curry{f} : A \to C^{B}$$ $$\curry{f} (a) = f(a, \_)$$
-La función $\curry{f}$ suele llamarse {\it currificación} de $f$ en honor al matemático Haskell B. Curry. Definimos la currificación de una función $f$ como $\curry{f} (a)(b) = f(a,b)$. 
+Al fijar un elemento $a \in A$ obtenemos una nueva función $f(a,\_) : B \to C$; en otras palabras, $f(a,\_) \in C^{B}$. Si hacemos nuevamente variar $a$ entre los elementos de $A$, obtenemos una nueva función que llamamos $\floor{f}$ tal que $$\floor{f} : A \to C^{B}$$ $$\floor{f} (a) = f(a, \_)$$
+La función $\floor{f}$ suele llamarse {\it currificación} de $f$ en honor al matemático Haskell B. Curry. Definimos la currificación de una función $f$ como $\floor{f} (a)(b) = f(a,b)$. 
 
-En resumidas cuentas, cualquier función que reciba dos argumentos puede ser currificada y obtener así una nueva función que recibe un solo argumento, retornando una función. Sin embargo, seguir el camino inverso también es posible; para toda función $g : A \to B \to C$ existe una única $\uncurry{g} : A \times B \to C$ tal que $g = \curry{\uncurry{g}}$. Podemos definirla como: $$\uncurry{g}(a,b) = g(a)(b)$$  
+En resumidas cuentas, cualquier función que reciba dos argumentos puede ser currificada y obtener así una nueva función que recibe un solo argumento, retornando una función. Sin embargo, seguir el camino inverso también es posible; para toda función $g : A \to C^{B}$ existe una única $\ceil{g} : A \times B \to C$ tal que $g = \floor{\ceil{g}}$. Podemos definirla como: $$\ceil{g}(a,b) = g(a)(b)$$  
 
-Es simple de probar que nos encontramos --para cada conjunto $C^B$-- frente a una serie de isomorfismos en $\Set$, uno por cada conjunto $A$. Si tenemos las funciones $f : A \times B\to C$ y $g : A\to C^{B}$ entonces vemos que se cumple que las dos posibles composiciones de las funciones $\curry{\_}$ y $\uncurry{\_}$ dan como resultado las respectivas identidades.
+Es simple de probar que nos encontramos --para cada conjunto $C^B$-- frente a una serie de isomorfismos en $\Set$, uno por cada conjunto $A$. Si tenemos las funciones $f : A \times B\to C$ y $g : A\to C^{B}$ entonces vemos que se cumple que las dos posibles composiciones de las funciones $\floor{\_}$ y $\ceil{\_}$ dan como resultado las respectivas identidades.
 
-$\uncurry{\curry{f}}(a,b) = \curry{f}(a)(b) = f(a,b) $
+$\ceil{\floor{f}}(a,b) = \floor{f}(a)(b) = f(a,b) $
 
-$\curry{\uncurry{g}}(a)(b) = \uncurry{g}(a,b) = g(a)(b) $
+$\floor{\ceil{g}}(a)(b) = \ceil{g}(a,b) = g(a)(b) $
 
 \subsection{Definición y formalización}
 Antes de continuar con la presentación categórica del objeto exponencial, veamos otro ejemplo de funtor que puede encontrarse en las categorías que cuentan con productos, y que nos será necesario para continuar con la exposición.
@@ -106,13 +106,13 @@ que habremos de llamar \AgdaFunction{HomProd}.
   Al igual que con el coproducto y el producto, diremos que una categoría {\it cuenta con exponenciales} cuando para todo par de objetos existe el exponencial entre ellos.
 \end{definition}
 
-Del análisis de la definición observamos que para que un objeto $C^B$ sea exponencial deberá existir una transformación natural $\curry{\_}: \mathit{Hom}(\_\times B, C) \Rightarrow \mathit{Hom}(\_,C^B)$ tal que para cada $A$, cada una de sus componentes $\curry{\_}_{A}$ es un isomorfismo. Llamaremos $\uncurry{\_}_{A}$ a cada una de las inversas. El siguiente diagrama lo expresa de una forma alternativa. La doble línea indica la presencia de un isomorfismo.
+Del análisis de la definición observamos que para que un objeto $C^B$ sea exponencial deberá existir una transformación natural $\floor{\_}: \mathit{Hom}(\_\times B, C) \Rightarrow \mathit{Hom}(\_,C^B)$ tal que para cada $A$, cada una de sus componentes $\floor{\_}_{A}$ es un isomorfismo. Llamaremos $\ceil{\_}_{A}$ a cada una de las inversas. El siguiente diagrama lo expresa de una forma alternativa. La doble línea indica la presencia de un isomorfismo.
 
 \begin{center}
 \xymatrixcolsep{1pc}
   \begin{minipage}{0.1\linewidth}
     \begin{center}
-      \centerline{ \xymatrix{ {} \\ {}  \ar@/^/^{\uncurry{\_}_{A}}[u] }}
+      \centerline{ \xymatrix{ {} \\ {}  \ar@/^/^{\ceil{\_}_{A}}[u] }}
     \end{center}
   \end{minipage}
   \begin{minipage}{0.2\linewidth}
@@ -123,21 +123,21 @@ Del análisis de la definición observamos que para que un objeto $C^B$ sea expo
   \end{minipage}
   \begin{minipage}{0.1\linewidth}
     \begin{center}
-      \centerline{ \xymatrix{ {} \ar@/^/^{\curry{\_}_{A}}[d] \\ {} }}
+      \centerline{ \xymatrix{ {} \ar@/^/^{\floor{\_}_{A}}[d] \\ {} }}
     \end{center}
   \end{minipage}
 \end{center}
 
-Para apreciar mejor las consecuencias de la ley de naturalidad que obtenemos de la transformación natural $\curry{\_}$, observemos el siguiente diagrama conmutativo. Para todo par de objetos $A$ y $A'$ y morfismo $f : A' \to A$ de la categoría $\C^{op}$, el siguiente diagrama deberá conmutar.
+Para apreciar mejor las consecuencias de la ley de naturalidad que obtenemos de la transformación natural $\floor{\_}$, observemos el siguiente diagrama conmutativo. Para todo par de objetos $A$ y $A'$ y morfismo $f : A' \to A$ de la categoría $\C^{op}$, el siguiente diagrama deberá conmutar.
 
 \begin{center}
   \xymatrixcolsep{4pc} \xymatrixrowsep{3pc}
   \centerline{\xymatrix{ 
-      \mathit{Hom}(A\times B,C) \ar[r]^{\_\circ(f\times \id{B})} \ar@/_/[d]_{\curry{\_}_{A}} & \mathit{Hom}(A'\times B,C) \ar@/_/[d]_{\curry{\_}_{A'}}\\
-      \mathit{Hom}(A,C^B) \ar[r]_{\_ \,\circ\, f} \ar@/_/[u]_{\uncurry{\_}_{A}}& \mathit{Hom}(A',C^B)  \ar@/_/[u]_{\uncurry{\_}_{A'}}
+      \mathit{Hom}(A\times B,C) \ar[r]^{\_\circ(f\times \id{B})} \ar@/_/[d]_{\floor{\_}_{A}} & \mathit{Hom}(A'\times B,C) \ar@/_/[d]_{\floor{\_}_{A'}}\\
+      \mathit{Hom}(A,C^B) \ar[r]_{\_ \,\circ\, f} \ar@/_/[u]_{\ceil{\_}_{A}}& \mathit{Hom}(A',C^B)  \ar@/_/[u]_{\ceil{\_}_{A'}}
 }}
 \end{center}
-Además de los isomorfismos ya mencionados, se deberá pedir que se cumpla la ley de naturalidad dada por: $$\curry{g \circ (f \times \id{B})}_{A'} \cong \curry{g}_{A} \circ f \qquad \mbox{ para todo } g : A\times B \to C$$
+Además de los isomorfismos ya mencionados, se deberá pedir que se cumpla la ley de naturalidad dada por: $$\floor{g \circ (f \times \id{B})}_{A'} \cong \floor{g}_{A} \circ f \qquad \mbox{ para todo } g : A\times B \to C$$
 
 Finalmente formalizamos el hecho de que una categoría $\C$ cuente con exponenciales con la estructura presentada en el código \ref{code:hasExponentials}. El campo \AgdaField{Exp} construye el objeto exponencial a partir de otros dos cualesquiera. El elemento \AgdaField{floor} es la transformación natural entre los funtores mencionados anteriormente, siendo el campo \AgdaField{nat} la formalización de la ley de naturalidad. Finalmente, el campo \AgdaField{ceil} construye cada uno de los isomorfismos requeridos, y la garantía de serlo está dada por los elementos \AgdaField{iso$_1$} e \AgdaField{iso$_2$}. 
 

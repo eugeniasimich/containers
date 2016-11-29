@@ -90,8 +90,8 @@ ContHasInitial = record
 ContHasExponentials : HasExponentials 𝑪𝒐𝒏𝒕 ContHasProducts
 ContHasExponentials = record
             { Exp      = _^_
-            ; floor    = ⌊_⌋
-            ; ceil     = ⌈_⌉
+            ; floor    = curry
+            ; ceil     = uncurry
             ; iso₁     = iso₁
             ; iso₂     = iso₂
             ; nat      = natural }

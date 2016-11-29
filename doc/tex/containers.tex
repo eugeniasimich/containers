@@ -228,7 +228,7 @@ Por su parte, la función \AgdaFunction{cons} \AgdaBound{x} construye una lista 
 \end{example}
 
   A pesar de haber sostenido que los containers nos proveen una forma de construir funtores recurriendo al cálculo de su extensión, nos queda pendiente evidenciar que esto es cierto. Intuitivamente, si un container es un esqueleto donde se guardarán datos, resulta lógico que los datos almacenados puedan ser modificados sin tocar ese esqueleto que los contiene.
-  A continuación definimos la función \AgdaFunction{map} de containers. Queda pendiente demostrar que dicha función cumple con los requerimientos de la definición \ref{def:funtor}
+  A continuación definimos la función \AgdaFunction{map} para containers. Queda pendiente demostrar que dicha función cumple con los requerimientos de la definición \ref{def:funtor}
 
 \begin{definition} Sea $f$ una función de $X$ en $Y$ y $C$ un container. Se define el mapeo de $f$ sobre el funtor container \agdaExt{$C$} como una nueva función de \agdaExt{$C$} $X$ en \agdaExt{$C$} $Y$ que preserva las formas y aplica $f$ a los elementos almacenados, como se indica a continuación:
 
@@ -244,12 +244,7 @@ Así como vemos que la extensión de un container resulta ser un endofuntor en \
   \ExecuteMetaData[latex/Composition.tex]{compose}
 \end{definition}
 
-Componer constructores de tipos da como resultado constructores en cierta forma {\it anidados}. Con la composición podemos formar, por ejemplo, las listas de árboles o los árboles de listas. En el siguiente código vemos la construcción del tipo \AgdaFunction{maybeSthg} $C$, que no es más que el constructor $C$ equipado de un valor extra. 
-
-\begin{example} {\it Composición del constructor de tipos \AgdaDatatype{Maybe} con cualquier otro constructor $C$}
-  
-  \ExecuteMetaData[latex/Examples.tex]{maybeSthg}
-\end{example}
+Componer constructores de tipos da como resultado constructores en cierta forma {\it anidados}. Con la composición podemos formar, por ejemplo, las listas de árboles o los árboles de listas. En el ejemplo \ref{ex:cont:comp} veremos un ejemplo de su uso.
 
 \vspace{3ex}
 
@@ -339,6 +334,20 @@ Un valor de tipo \AgdaDatatype{Maybe} \AgdaBound{X} contiene o bien un valor \Ag
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%     Composición
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{example}\label{ex:cont:comp} 
+  En el siguiente código vemos un ejemplo de cómo podemos componer dos containers. La composición del container \AgdaDatatype{cMaybe} con cualquier otro container $C$ dará como resultado otro container; calculada su extensión, obtenemos un nuevo constructor de tipos, que no es más que el constructor $C$ equipado de un valor extra. 
+
+  
+  \ExecuteMetaData[latex/Examples.tex]{maybeSthg}
+\end{example}
+\vspace{2ex}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%     STREAM
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -355,13 +364,15 @@ Resulta importante evidenciar que es imposible construir un elemento de este tip
 \AgdaFunction{s} = \AgdaNumber{1} \AgdaInductiveConstructor{$::$} \AgdaTerminationProblem{\AgdaFunction{s}}
 
 El recuadro naranja es la simbología que usa Agda para indicar que no puede construir una función debido a que no puede garantizar su terminación. 
-Por lo tanto, dicho tipo de datos se define de forma coinductiva:
+Por lo tanto, dicho tipo de datos se define de utilizando records coinductivos, indicándolo con la palabra reservada \AgdaKeyword{coinductive}, dentro de la construcción del record:
 
 \ExecuteMetaData[latex/Stream.tex]{stream}
 
-Ahora sí podemos definir el stream de unos:
+Habiendo definido \AgdaDatatype{Stream} de dicha forma, podemos definir la secuencia infinita de unos mediante la utilización de {\it copatrones}, como se observa en el siguiente código:
 
 \ExecuteMetaData[latex/Stream.tex]{stream1s}
+
+Es decir, por un lado indicamos que la cabeza del stream es el número uno y por el otro, que el resto es el mismo stream.
 
 Para pensar en una representación con containers de los streams, tenemos que dar, por un lado, un conjunto de formas. A diferencia de las listas, que podían ser de longitudes arbitrariamente grandes pero siempre finitas, los streams tienen todos una única longitud, y por lo tanto una única forma. Las posiciones en esa única forma son tantas como naturales haya. Se define entonces el container que representa al constructor de streams como:
 
@@ -496,10 +507,10 @@ Notar que de cada lado de la igualdad, $f$ y \AgdaFunction{map} se instancian de
 \AgdaFunction{map}$_{G}\ h\ \circ\ f_{X}$ = $f_{Y}\ \circ$ \AgdaFunction{map}$_{F}\ h$
 \end{definition}
 
-Para ello, definiremos un mecanismo de extensión que notaremos \agdaExtMorph{$\_$}\\ tal que
+Para ello, definiremos un mecanismo de extensión que notaremos\ \agdaExtMorph{$\_$} tal que\\
 \agdaExtMorph{\AgdaFunction{cf}} : \AgdaSymbol{$\forall$}\AgdaBound{$\{$X$\}\to$} \agdaExt{\AgdaFunction{cF}} \AgdaBound{X} \AgdaSymbol{$\to$} \agdaExt{\AgdaFunction{cG}} \AgdaBound{X}
 y así obtener
-\agdaExtMorph{\AgdaFunction{cf}} $\cong$ \AgdaFunction{f}. La función \agdaExtMorph{\AgdaFunction{cf}} obtenida de extender el morfismo \AgdaFunction{cf} será una transformación natural entre los funtores container \agdaExt{\AgdaFunction{cF}} y \agdaExt{\AgdaFunction{cG}}.
+\agdaExtMorph{\AgdaFunction{cf}} $\cong$ \AgdaFunction{f}. La función \agdaExtMorph{\AgdaFunction{cf}} resultante de extender el morfismo \AgdaFunction{cf} será una transformación natural entre los funtores container \agdaExt{\AgdaFunction{cF}} y \agdaExt{\AgdaFunction{cG}}.
 
 \vspace{2ex}
 

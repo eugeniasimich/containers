@@ -15,6 +15,7 @@ open import Data.Product hiding (map)
 open import Data.Sum 
 open import Data.Empty
 open import Function renaming (_∘_ to _∘ₛ_ ; id to idₛ)
+open import Relation.Binary.HeterogeneousEquality renaming ([_] to [_]ᵢ)
 \end{code}
 
 %<*clist>
@@ -262,10 +263,32 @@ creverse = idₛ , rev-pos
 
 %<*maybeSthg>
 \begin{code}
-maybeSthg : Cont → Cont
-maybeSthg C = Compose cMaybe C
+cMaybeSthg : Cont → Cont
+cMaybeSthg C = Compose cMaybe C
 \end{code}
 %</maybeSthg>
+
+%<*maybeList>
+\begin{code}
+MaybeList : Set → Set
+MaybeList = ⟦ cMaybeSthg cList ⟧ 
+\end{code}
+%</maybeList>
+
+%<*maybeListconstr>
+\begin{code}
+nolist : ∀{X} → MaybeList X
+nolist = (false , (λ ())) , (λ { (() , _) })
+
+justnil : ∀{X} → MaybeList X
+justnil = (true , (λ { tt → 0 } )) , (λ { (tt , ()) })
+
+justcons : ∀{X} → X → MaybeList X → MaybeList X
+justcons x ((false , s) , f) = nolist
+justcons x ((true , s) , f) with inspect s tt
+justcons x ((true , s) , f) | [ refl ]ᵢ = ((true , (λ { tt → suc (s tt)}) )) , (λ { (tt , zero) → x ; (tt , suc i) → f (tt , i) })
+\end{code}
+%</maybeListconstr>
 
 
 --Coproduct Example

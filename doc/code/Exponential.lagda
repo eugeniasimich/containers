@@ -1,13 +1,13 @@
 \begin{code}
 module Exponential where
 open import Container hiding (map)
-open import Data.Product hiding (map)
+open import Data.Product hiding (map) renaming (curry to curryₛ ; uncurry to uncurryₛ)
 open import Data.Sum --renaming (map to map₊)
 open import Data.Unit
 open import Function renaming (id to idₛ ; _∘_ to _∘ₛ_) 
 open import Morphism
 open import Extras
-open import Product
+open import Product 
 open import Relation.Binary.HeterogeneousEquality hiding ([_] ; inspect)
 open import Relation.Binary.PropositionalEquality hiding (cong)--using (_≡_; refl)
 
@@ -58,8 +58,8 @@ insLeft (inj₂ y)  pr = inj₂ y
 --downwards
 %<*floor>
 \begin{code}
-⌊_⌋ : {A B C : Cont} → (Both A B ⇒ C) → (A ⇒ C ^ B)
-⌊ f ⌋ = (λ a b → mSh f (a , b) , eraseLeft ∘ₛ (mPos f) ), 
+curry : {A B C : Cont} → (Both A B ⇒ C) → (A ⇒ C ^ B)
+curry f = (λ a b → mSh f (a , b) , eraseLeft ∘ₛ (mPos f) ), 
         (λ { {a} (b , c , r) → fromInj₁ (mPos f {a , b} c) r })
 \end{code}
 %</floor>
@@ -67,8 +67,8 @@ insLeft (inj₂ y)  pr = inj₂ y
 --upwards
 %<*ceil>
 \begin{code}
-⌈_⌉ : {A B C : Cont} → (A ⇒ C ^ B) → (Both A B ⇒ C)
-⌈ f ⌉ = proj₁ ∘ₛ uncurry (mSh f) , 
+uncurry : {A B C : Cont} → (A ⇒ C ^ B) → (Both A B ⇒ C)
+uncurry f  = proj₁ ∘ₛ uncurryₛ (mSh f) , 
         (λ { {a , b} c → insLeft  (proj₂ (mSh f a b) c)
                                   (λ pr → (mPos f {a} (b , c , pr))) }) 
 \end{code}
@@ -77,7 +77,7 @@ insLeft (inj₂ y)  pr = inj₂ y
 %<*emap>
 \begin{code}
 emap : {A B C C' : Cont} → (f : C ⇒ C') → (h : A ⇒ C ^ B) → A ⇒ C' ^ B
-emap f h = ⌊ f ∘ ⌈ h ⌉ ⌋
+emap f h = curry (f ∘ uncurry h)
 \end{code}
 %</emap>
 
@@ -94,7 +94,7 @@ eval = (λ { (bc , b) → proj₁ (bc b) }) , (λ { {bc , b} q → choose b bc q
 
 
 --now the proof of:
--- ⌈_⌉ . ⌊_⌋ = id = ⌊_⌋ . ⌈_⌉ 
+-- curry . uncurry = id = uncurry . curry
 
 --Auxiliary proofs
 
@@ -135,8 +135,8 @@ lema₃ {b = inj₂ _}   = ext (λ { () })
 \begin{code}
 uncurryEq  :  ∀{A : Set} {B B' : A → Set} {C : Set }
            →  {f : (p : Σ A B) → C } {g : (p : Σ A B') → C}
-           →  B ≅ B' → curry f ≅ curry g → f ≅ g
-uncurryEq refl p = dcong uncurry p refl refl 
+           →  B ≅ B' → curryₛ f ≅ curryₛ g → f ≅ g
+uncurryEq refl p = dcong uncurryₛ p refl refl 
 \end{code}
 %</uncurryEq>
 
@@ -165,7 +165,7 @@ lema₅ {a = inj₂ y} {()}
 \begin{code} 
 iso₁  :  {A B C : Cont}
       →  {f : Both A B ⇒ C}
-      →  ⌈ ⌊ f ⌋ ⌉ ≅ f
+      →  uncurry (curry f) ≅ f
 iso₁  =  mEq  (ext (λ { (_ , _) → refl }))
               (iext (λ { {_ , _} →
                  ext (λ _ → lema₁)}))
@@ -176,13 +176,13 @@ iso₁  =  mEq  (ext (λ { (_ , _) → refl }))
 \begin{code}
 iso₂  :  {A B C : Cont}
       →  {g : A ⇒ (C ^ B)}
-      →  ⌊ ⌈ g ⌉ ⌋ ≅ g
+      →  curry (uncurry g)  ≅ g
 iso₂ {A} {B} {C} {g} =
     mEq  (ext  (λ _ → ext (λ _ → dSumEq  refl refl
                                         (ext (λ _ → lema₂)))))
          (iext  (λ {a} →
                 uncurryEq  (ext  (λ b →
-                                 dcong  (Σ (Pos C (mSh ⌈ g ⌉ (a , b))))
+                                 dcong  (Σ (Pos C (mSh (uncurry g) (a , b))))
                                         (ext (λ _ → cong  (λ x → x ≡ inj₁ tt)
                                                           lema₂))
                                         refl refl))
@@ -198,7 +198,7 @@ iso₂ {A} {B} {C} {g} =
 natural  :  {A A' B C  : Cont}
          →  (g : (Both A B) ⇒ C)
          →  (f : A' ⇒ A)
-         →  ⌊ g ∘ (f ×ₘ id) ⌋ ≅ ⌊ g ⌋ ∘ f
+         →  curry (g ∘ (f ×ₘ id)) ≅ curry g ∘ f
 natural {A} {A'} {B} {C} g f =
   mEq  (ext (λ _ →
             ext (λ _ → dSumEq  refl refl

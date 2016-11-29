@@ -37,7 +37,7 @@ Para explicarlo someramente podemos decir que \AgdaDatatype{Set} : \AgdaDatatype
 \sangrar
 \AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} : \AgdaDatatype{Set$_{2}$} : \AgdaDatatype{Set$_{3}$} \ldots
 
-En esta tesina tomaremos el criterio general de pasar por alto el detalle de a qué nivel de universo pertenecen nuestras construcciones, con el objetivo de simplificar las exposiciones. En su lugar, a menos que se indique explícitamente de otra forma, consideraremos $\Set : \Set$. Sin embargo, en el código Agda que acompaña a esta tesina, los distintos niveles se respetan.
+En esta tesina tomaremos el criterio general de pasar por alto el detalle de a qué nivel de universo pertenecen nuestras construcciones, con el objetivo de simplificar las exposiciones. En su lugar, a menos que se indique explícitamente de otra forma, consideraremos \AgdaDatatype{Set : Set}. Sin embargo, en el código Agda que acompaña a esta tesina, los distintos niveles se respetan.
 
 Retomando el análisis del código expuesto en \ref{code:bool}, observemos que la definición continúa con la declaración de los constructores de términos. La indentación no es una mera cuestión de estilo sino que forma parte del lenguaje. En este caso decimos que los únicos habitantes del tipo \AgdaDatatype{Bool} son los elementos \AgdaInductiveConstructor{true} y \AgdaInductiveConstructor{false}. Es decir, implícitamente esta forma de definir datos nos asegura que los constructores que declaremos sean todas las formas de construcción posibles.
 De esta forma, si quisiéramos definir un tipo vacío simplemente no declararíamos constructor alguno, como se puede observar en el código \ref{code:bot} donde definimos el tipo vacío \AgdaDatatype{$\bot$}.
@@ -70,7 +70,7 @@ resulta muy sencillo garantizar la totalidad de las funciones, asegurando que la
 
 A diferencia de lenguajes funcionales como Haskell o ML, Agda no siempre puede inferir el tipo de las funciones, por lo que la declaración de signatura, i.e., la primera línea de la definición de \AgdaFunction{not} del código \ref{code:not}, no puede obviarse. 
 
-Otro tipo de pattern matching que permite la sintaxis de Agda es sobre funciones anónimas. Una función anónima es una función sin nombre. Por ejemplo, podemos definir la función identidad de forma anónima como $(\lambda\ x \to x)$. Es decir, dado un valor cualquiera, lo retornamos.
+Otro tipo de pattern matching que permite la sintaxis de Agda es sobre los argumentos de funciones anónimas. Una función anónima es una función sin nombre. Por ejemplo, podemos definir la función identidad de forma anónima como $(\lambda\ x \to x)$. Es decir, dado un valor cualquiera, lo retornamos.
 
 Pero como hemos observado antes, la función \AgdaFunction{idBool} en particular no observa nada del argumento. ¿Cómo haríamos si quisiéramos retornar algo en función del valor del argumento? Agda permite hacer pattern matching dentro de funciones anónimas utilizando llaves para englobar la función, y punto y coma para separar los casos. La versión anónima de \AgdaFunction{not} es entonces: $(\lambda\ \{ \AgdaInductiveConstructor{true} \to \AgdaInductiveConstructor{false} ; \AgdaInductiveConstructor{false} \to \AgdaInductiveConstructor{true} \})$.
 
@@ -184,7 +184,7 @@ La suma sobre números naturales puede ser definida haciendo recursión primitiv
 
 Tenemos dos casos: el caso base, donde decimos que la suma entre cero y cualquier otro número resulta en este último; y por otro lado el caso recursivo, donde decimos que sumar el sucesor de un número con cualquier otro es igual al sucesor de la suma de ellos dos.
 
-Como los programas en Agda son totales, se deberá garantizar su terminación. Seguramente el lector se encontrará sorprendido ante tal aseveración. ¿Cómo es esto posible, si estamos frente al famoso problema de la parada, que sabemos indecidible? Pues bien, Agda es un lenguaje para el cual el chequeo de terminación resulta decidible, pero lo logra perdiendo expresividad en el camino. Usando Agda, obtenemos garantía de terminación en detrimento de turing-completitud. 
+Como los programas en Agda son totales, se deberá garantizar su terminación. Seguramente el lector se encontrará sorprendido ante tal aseveración. ¿Cómo es esto posible, si estamos frente al famoso problema de la parada, que sabemos indecidible? Pues bien, Agda es un lenguaje para el cual el chequeo de terminación resulta decidible, pero lo logra perdiendo expresividad en el camino. Usando Agda, obtenemos garantía de terminación en detrimento de Turing-completitud. 
 Las llamadas recursivas a las funciones deben realizarse sobre argumentos estructuralmente más pequeños para así poder garantizar que terminan. En este sentido, Agda considera que $x$ es menor en estructura que \AgdaInductiveConstructor{suc} $x$ y acepta a \AgdaFunction{suma} como válida.
 
 \section{Tipo de datos dependientes}
@@ -216,7 +216,7 @@ Además, podemos construir la proposición de la negación. Como vemos en el có
 
 
 Una proposición más interesante es la de la equivalencia proposicional, introducida por Martin Löf~\cite{Martin-Lof-1972,Martin-Lof-1973}, expuesta en el código \ref{code:propequiv}.
-El tipo de datos \AgdaDatatype{$\_\equiv\_$} construye, a partir de un tipo de datos $A$ y un habitante $x$, una familia de tipos indexada en $A$. Es decir, por cada elemento $y$ de $A$, obtenemos el conjunto $x$ \AgdaDatatype{$\equiv$} $y$, que estará habitado por el elemento \AgdaInductiveConstructor{refl} sólo cuando $y$ sea igual a $x$. 
+El tipo de datos \AgdaDatatype{$\_\equiv\_$} construye, a partir de un tipo $A$ y un habitante $x$, una familia de tipos indexada en $A$. Es decir, por cada elemento $y$ de $A$, obtenemos el tipo $x$ \AgdaDatatype{$\equiv$} $y$, que estará habitado por el elemento \AgdaInductiveConstructor{refl} sólo cuando $y$ sea igual a $x$. 
 
 \begin{agdacode}{\it Equivalencia proposicional} \label{code:propequiv}
 
@@ -303,14 +303,14 @@ Utilizar este recurso implica probar algo levemente diferente: siendo {\it pr} :
 \end{agdacode}
 
 La substitución es un recurso válido, pero incómodo, sobre todo en definiciones encadenadas y recurrentes.
-Una forma más cómoda y elegante para lidiar con dicho inconveniente es utilizar una noción de equivalencia a priori más laxa: la equivalencia heterogénea\cite{mcbride:motive}.
+Una forma más cómoda y elegante para lidiar con dicho inconveniente es utilizar una noción de equivalencia a priori más laxa: la equivalencia heterogénea~\cite{mcbride:motive}.
 
 \begin{agdacode}{\it Equivalencia heterogénea} \label{code:heterequiv}
 
   \ExecuteMetaData[latex/Agda.tex]{equivH}
 \end{agdacode}
 
-Observemos que el truco de esta definición es engañar al chequeador de tipos del lenguaje, promulgando definir la equivalencia entre elementos de tipos distintos, para luego definir como constructor a la misma cláusula de reflexividad que la equivalencia de Martin Löf, donde los tipos son el mismo.
+Observemos que el truco de esta definición es engañar al chequeador de tipos del lenguaje, promulgando definir la equivalencia entre elementos de tipos distintos, para luego definisr como constructor a la misma cláusula de reflexividad que la equivalencia de Martin Löf, donde los tipos son el mismo.
 
 El lema de congruencia para funciones de tipo dependiente es ahora posible de ser probado, como se muestra a continuación
 
@@ -391,22 +391,25 @@ El siguiente postulado de extensionalidad es un poco más general que el present
 En esta sección introduciremos la noción de universo con el objetivo de dar fundamento a la temática principal de este trabajo, que consiste ni más ni menos que en un universo en particular, el universo de containers. Comenzaremos con la definición conceptual, para luego exponer ejemplos que motivarán las ventajas y posibles usos de estas construcciones.
 
 La posibilidad de crear universos es una característica que poseen los lenguajes con tipos dependientes de la que carecen lenguajes con tipos simples.   
-En términos generales, un universo de tipos es simplemente una colección de tipos, cerrada bajo ciertos constructores.
+En términos generales, un universo de tipos es simplemente una colección de tipos, cerrada bajo ciertos constructores. En otras palabras, un universo es un tipo cuyos habitantes son a su vez tipos. Dicho esto, el ejemplo más inmediato de universo que se nos ocurre es \AgdaDatatype{Set}, 
+%Un claro ejemplo de universo de tipos ya fue
+presentado en la introducción y vuelto a mencionar en la sección \ref{agda:data}.
 
-Un claro ejemplo de universo de tipos ya fue presentado en la introducción y vuelto a mencionar en la sección \ref{agda:data}. Para evitar una paradoja similar a la paradoja de Russell, los tipos de Agda se encuentran subdivididos en universos. Todo tipo pertenece a un universo en particular. Los tipos básicos, construidos de forma inductiva, pertenecen al primer nivel, \AgdaDatatype{Set$_0$} (o simplemente \AgdaDatatype{Set}). Por su parte, \AgdaDatatype{Set$_0$} y los tipos construidos a partir de él, tienen tipo \AgdaDatatype{Set$_1$}. Es así como se forma la siguiente jerarquía de universos: 
+Para evitar una paradoja similar a la paradoja de Russell, los tipos de Agda se encuentran subdivididos en universos~\cite{Martin-Lof-1972}. Todo tipo pertenece a un universo en particular. Los tipos básicos, construidos de forma inductiva, pertenecen al primer nivel, \AgdaDatatype{Set$_0$} (o simplemente \AgdaDatatype{Set}). Por su parte, \AgdaDatatype{Set$_0$} y los tipos construidos a partir de él, tienen tipo \AgdaDatatype{Set$_1$}. Es así como se forma la siguiente jerarquía de universos: 
 
 \sangrar
 \AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} : \AgdaDatatype{Set$_{2}$} : \AgdaDatatype{Set$_{3}$} \ldots
 
+Pero la importancia de los universos no se termina allí. La programación genérica tiene como objeto la construcción de algoritmos que actúen de forma genérica sobre un conjunto determinado de tipos. Pero el problema que surge al querer programar genéricamente, es que no podemos hacer pattern matching sobre el tipo \AgdaDatatype{Set}. Por otra parte, el conjunto de tipos sobre el que se pretende trabajar es muchas veces un subconjunto de todos los tipos posibles. En este marco, sería interesante poder definir nuestros propios universos, delimitando así el conjunto de tipos con los que habremos de trabajar. 
 
-Utilizando notación Agda, diremos que un {\it universo} es un tipo $U$ y una función de interpretación o {\it extensión} $\agdaExt{$\_$}$ tal que
+Gracias a la expresividad inherente a los lenguajes de tipos dependientes, podemos describir ese conjunto de forma precisa a partir de definir una colección de {\it códigos sintácticos}, uno por cada tipo a incluir, y una {\it función de interpretación} o {\it extensión} que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
+
+
+Utilizando notación Agda, diremos que un {\it universo}\footnote{desde ahora se utilizará el término universo sobre todo para referir a un conjunto de códigos sintácticos equipado con una función de interpretación, dejando de lado la primera aproximación de definición, como colección de tipos.} es un tipo $U$ de códigos y una función extensión $\agdaExt{$\_$}$ tal que
 $$\begin{array}{rl}
   U\, & : \, \AgdaDatatype{Set}\\
   \agdaExt{$\_$}\, & : \,  U \to \AgdaDatatype{Set}
 \end{array}$$
-
-
-La programación genérica tiene como objeto la construcción de algoritmos que actúen de forma genérica sobre un conjunto determinado de tipos. Pero el problema que surge al querer programar genéricamente, es que no podemos hacer pattern matching sobre el tipo \AgdaDatatype{Set}. Por otra parte, el conjunto de tipos sobre el que se pretende trabajar es muchas veces un subconjunto de todos los tipos posibles. Podemos obtener ese subconjunto de forma precisa a partir de definir un universo de códigos sintácticos, uno por cada tipo a incluir, y una función de interpretación que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
 
 A continuación vemos un ejemplo ilustrativo sencillo, un universo que contiene a los booleanos y a los números naturales.
 
@@ -417,13 +420,12 @@ A continuación vemos un ejemplo ilustrativo sencillo, un universo que contiene 
 
 Es posible definir funciones genéricas sobre un universo simplemente haciendo pattern matching en los códigos sintácticos. Definimos la extensión del universo de naturales y booleanos en el código \ref{code:codesextension}.
 
-
 \begin{agdacode}\label{code:codesextension}{\it Extensión del universo de los tipos naturales y booleanos }
 
 \ExecuteMetaData[latex/Universos.tex]{extension}
 \end{agdacode}
 
-Podemos generalizar esta definición para incluir también la posibilidad de definir universos de constructores de tipos. Observemos el siguiente ejemplo de universo que nuclea a los constructores de listas y de árboles\footnote{Ver códigos \ref{list} y \ref{code:tree} para la definición de los elementos \AgdaDatatype{List} y \AgdaDatatype{Tree}}
+Podemos generalizar más aún esta definición y así incluir la posibilidad de definir universos de constructores de tipos. Observemos el siguiente ejemplo de universo que nuclea a los constructores de listas y de árboles\footnote{Ver códigos \ref{list} y \ref{code:tree} para la definición de los elementos \AgdaDatatype{List} y \AgdaDatatype{Tree}}
 
 \begin{agdacode}\label{code:codes2}{\it Códigos para la definición del universo de constructores }
 

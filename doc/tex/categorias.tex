@@ -13,7 +13,7 @@ Así como la teoría de álgebras ha sabido instaurar su propio lenguaje basado 
 
 La razón por cual resulta interesante hablar en el lenguaje de las categorías es la fuerte conexión que encontramos entre dicha teoría, la teoría de tipos y el lambda cálculo, subyacentes a los lenguajes funcionales, Agda en particular. Una forma de percibir a grandes rasgos que dicha conexión no es casual, es observar que el lambda cálculo también hace énfasis en las funciones, es un cálculo de funciones que instaura reglas formales para su manipulación. 
 
-En esta sección expondremos el vocabulario básico de la teoría de categorías. A diferencia de lo que podríamos encontrar en cualquier libro introductorio al tema, secundaremos la exposición de cada nuevo concepto con formalizaciones en Agda y ejemplos que apunten a una mayor comprensión de las secciones subsiguientes. La formalización está basada en la realizada por Altenkirch {\it et al}~\cite{relativemonads}.  
+En esta sección expondremos el vocabulario básico de la teoría de categorías. A diferencia de lo que podríamos encontrar en cualquier libro introductorio al tema, secundaremos la exposición de cada nuevo concepto con formalizaciones en Agda y ejemplos que apunten a una mayor comprensión de las secciones subsiguientes. La formalización está basada en la realizada por Altenkirch {\it et al.}~\cite{relativemonads}.  
 \newpage
 
 \section{Categoría}
@@ -43,7 +43,7 @@ Un ejemplo importante de categoría, debido a su ubicuidad y a ser fuente de int
 \end{example}
 
 \begin{example} \label{ex:op}
-Otro ejemplo que nos resultará de utilidad en las próximas secciones es el de la categoría {\it dual}, que se obtiene de invertir todos los morfismos. Es decir, dada una categoría $\C$, su categoría dual $\C^{op}$ tiene los mismos objetos que $\C$ y por cada morfismo $f \in \Hom{A}{B}{\C}$, un morfismo\\ $f \in \Hom{B}{A}{\C^{op}}$.
+Otro ejemplo que nos resultará de utilidad en las próximas secciones es el de la categoría {\it dual}, que se obtiene de invertir todos los morfismos. Es decir, dada una categoría $\C$, su categoría dual $\C^{op}$ tiene los mismos objetos que $\C$ y por cada morfismo $f \in \Hom{A}{B}{\C}$, un morfismo $f \in \Hom{B}{A}{\C^{op}}$.
 \end{example}
 
 \hspace{1ex}
@@ -129,7 +129,8 @@ satisfaciendo las leyes:
   \end{itemize}
 \end{definition}
 
-En términos gráficos, podemos decir que un funtor $F : \C \to \mathscr{D}$ hace conmutar al siguiente diagrama:
+A continuación podemos observar dos diagramas: uno en la categoría $\C$ y el otro en $\mathscr{D}$.
+En términos gráficos, podemos decir que $F : \C \to \mathscr{D}$ será funtor si hace conmutar al diagrama de la derecha, para todo $A,\ B,\ C,\ f$ y $g$ posibles:
 
 \begin{tabular}{l c c r}
   &\xymatrixcolsep{4pc} \xymatrixrowsep{4pc}
