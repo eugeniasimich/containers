@@ -25,16 +25,16 @@ insLeft : ∀{a b}{A : Set a}{B : Set b} → (x : ⊤ ⊎ B) → (x ≡ inj₁ t
 insLeft (inj₁ _) pr = inj₁ (pr refl)
 insLeft (inj₂ y) pr = inj₂ y
 
-⌊_⌋ : ∀{l}{A B C : Container {l}} → (Both A B) ⇒ C → A ⇒ (C ^ B)
-⌊ f ⌋ = (λ a b → mSh f (a , b) , eraseLeft ∘ₛ (mPos f) ),
+curry : ∀{l}{A B C : Container {l}} → (Both A B) ⇒ C → A ⇒ (C ^ B)
+curry f = (λ a b → mSh f (a , b) , eraseLeft ∘ₛ (mPos f) ),
         (λ { {a} (b , c , r) → fromInj₁ (mPos f {a , b} c) r })
 
-⌈_⌉ : ∀{l}{A B C : Container {l}} → A ⇒ (C ^ B) → Both A B ⇒ C
-⌈ f ⌉ = proj₁ ∘ₛ uncurryₛ (mSh f) , 
+uncurry : ∀{l}{A B C : Container {l}} → A ⇒ (C ^ B) → Both A B ⇒ C
+uncurry f  = proj₁ ∘ₛ uncurryₛ (mSh f) , 
         (λ { {a , b} c → insLeft (proj₂ (mSh f a b) c) (λ pr → (mPos f {a} (b , c , pr ))) })
 
 ^map : ∀{l}{A B C C' : Container {l}} → (f : C ⇒ C') → (h : A ⇒ C ^ B) → A ⇒ C' ^ B
-^map f h = ⌊ f ∘ ⌈ h ⌉ ⌋
+^map f h = curry (f ∘ uncurry h)
 
 --auxiliary proofs
 
@@ -78,19 +78,19 @@ lema₅ {x = inj₂ y} {()}
 
 iso₁  :  ∀{l}{A B C : Container {l}}
       →  {f : Both A B ⇒ C}
-      →  ⌈ ⌊ f ⌋ ⌉ ≅ f
+      →  uncurry (curry f) ≅ f
 iso₁  =  mEq  (ext (λ { (_ , _) → refl }))
               (iext (λ { {_ , _} →
                  ext (λ _ → lema₁)}))
 
 iso₂  :  ∀{l}{A B C : Container {l}}
       →  {g : A ⇒ (C ^ B)}
-      →  ⌊ ⌈ g ⌉ ⌋ ≅ g
+      →  curry (uncurry g) ≅ g
 iso₂ {l} {A} {B} {C} {g} =
     mEq  (ext (λ _ → ext (λ _ → dSumEq refl refl (ext (λ _ → lema₂)))))
          (iext  (λ {a} →
                 uncurryEq  (ext  (λ b →
-                                 dcong  (Σ (Pos C (mSh ⌈ g ⌉ (a , b))))
+                                 dcong  (Σ (Pos C (mSh (uncurry g) (a , b))))
                                         (ext (λ _ → cong  (λ x → x ≡ inj₁ tt)
                                                           lema₂))
                                         refl refl))
@@ -102,7 +102,7 @@ iso₂ {l} {A} {B} {C} {g} =
 natural  :  ∀{l}{A A' B C  : Container {l}}
          →  (g : (Both A B) ⇒ C)
          →  (f : A' ⇒ A)
-         →  ⌊ g ∘ (f ×ₘ id) ⌋ ≅ ⌊ g ⌋ ∘ f
+         →  curry (g ∘ (f ×ₘ id)) ≅ curry g ∘ f
 natural {l} {A} {A'} {B} {C} g f =
   mEq  (ext (λ _ →
             ext (λ _ → dSumEq  refl refl
@@ -127,8 +127,8 @@ natural {l} {A} {A'} {B} {C} g f =
 ContHasExponentials : ∀{l} → HasExponentials {lsuc l} 𝑪𝒐𝒏𝒕 ContHasProducts
 ContHasExponentials = record
             { Exp      = _^_
-            ; floor    = ⌊_⌋
-            ; ceil     = ⌈_⌉
+            ; floor    = curry
+            ; ceil     = uncurry
             ; iso₁     = iso₁
             ; iso₂     = iso₂
             ; nat      = natural
