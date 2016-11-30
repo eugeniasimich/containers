@@ -8,7 +8,7 @@
 
 Agda~\cite{norell:thesis} es un lenguaje de programación desarrollado por la Universidad de Chalmers, que se caracteriza principalmente por poseer lo que se denominan tipos dependientes. A diferencia de algunos lenguajes de programación, como ser Haskell o ML, donde se diferencia claramente el lenguaje de los términos y el lenguaje de los tipos de datos, en los lenguajes con tipos dependientes los tipos son también valores. Esto implica que pueden depender de otros valores, ser tomados como argumento o retornados por funciones.
 
-Gracias al isomorfismo de Curry-Howard, Agda es no sólo un lenguaje de programación sino también un asistente de prueba. Coloquialmente hablando, el isomorfismo de Curry-Howard es una correspondencia entre la teoría de tipos y la lógica, equiparando tipos con proposiciones, términos con pruebas y evaluación de términos a forma normal, con normalización de pruebas. Como los tipos dependientes permiten hablar sobre valores dentro del mismo tipo, podemos expresar proposiciones que se refieran a los valores, como tipos de datos. Dichas proposiciones serán teoremas una vez que se provean habitantes del tipo de datos. Es decir que los términos son pruebas formales de la veracidad de las proposiciones. 
+Gracias al isomorfismo de Curry-Howard, Agda es no solo un lenguaje de programación sino también un asistente de prueba. Coloquialmente hablando, el isomorfismo de Curry-Howard es una correspondencia entre la teoría de tipos y la lógica, equiparando tipos con proposiciones, términos con pruebas y evaluación de términos a forma normal, con normalización de pruebas. Como los tipos dependientes permiten hablar sobre valores dentro del mismo tipo, podemos expresar proposiciones que se refieran a los valores, como tipos de datos. Dichas proposiciones serán teoremas una vez que se provean habitantes del tipo de datos. Es decir que los términos son pruebas formales de la veracidad de las proposiciones. 
 
 Agda es una implementación de la teoría de tipos de Martin-Löf~\cite{Martin-Lof-1972,Martin-Lof-1973,Martin-Lof-1979,martin-lof:bibliopolis}. Este introduce una lógica intuicionista, que a diferencia del lenguaje tradicional utilizado previamente en sistemas intuicionistas, permite incluir pruebas como parte de las proposiciones, utilizando el mismo lenguaje. Consciente de la relación, Martin-Löf propone el uso de su lógica intuicionista como un lenguaje de programación. Para que la lógica sea consistente, los programas deberán ser totales, no pudiendo fallar o no terminar, es por esta razón que Agda incluye mecanismos para la comprobación de la terminación de los programas.
 
@@ -61,7 +61,7 @@ Una función muy simple que podemos construir sobre el tipo \AgdaDatatype{Bool} 
 Notemos la función identidad no opera sobre el valor que recibe, simplemente lo retorna. Si quisiéramos operar sobre valores booleanos, tendríamos que diferenciar los casos donde $x$ es \AgdaInductiveConstructor{true} de los casos donde es \AgdaInductiveConstructor{false}.
 La función \AgdaFunction{not} de negación toma un valor booleano y retorna otro, siendo este falso cuando el argumento es verdadero y viceversa.
 Gracias a que la construcción de un tipo de datos se realiza mediante la declaración de un conjunto determinado de constructores,
-resulta muy sencillo garantizar la totalidad de las funciones, asegurando que la función se defina para cada constructor. Este recurso tiene el nombre de coincidencia de patrones, más conocido por su versión en inglés {\it pattern matching} y es la forma que tiene Agda para asegurar la totalidad. En este caso, la función \AgdaFunction{not} puede aceptar sólo valores de la forma \AgdaInductiveConstructor{true} o \AgdaInductiveConstructor{false}, dedicándosele una línea de código a cada posibilidad. 
+resulta muy sencillo garantizar la totalidad de las funciones, asegurando que la función se defina para cada constructor. Este recurso tiene el nombre de coincidencia de patrones, más conocido por su versión en inglés {\it pattern matching} y es la forma que tiene Agda para asegurar la totalidad. En este caso, la función \AgdaFunction{not} puede aceptar solo valores de la forma \AgdaInductiveConstructor{true} o \AgdaInductiveConstructor{false}, dedicándosele una línea de código a cada posibilidad. 
 
 \begin{agdacode}{\it Función de negación}\label{code:not}
   
@@ -189,7 +189,7 @@ Las llamadas recursivas a las funciones deben realizarse sobre argumentos estruc
 
 \section{Tipo de datos dependientes}
 
-La primera característica del lenguaje de programación Agda que suele mencionarse a la hora de describirlo es la de poseer {\it tipos dependientes}. Un tipo dependiente es aquél que depende de valores de otro tipo. Más precisamente, que se encuentra indexado por otro tipo. Un ejemplo paradigmático de tipo de datos dependiente es el de los vectores, listas de tamaño fijo. 
+La primera característica del lenguaje de programación Agda que suele mencionarse a la hora de describirlo es la de poseer {\it tipos dependientes}. Un tipo dependiente es aquel que depende de valores de otro tipo. Más precisamente, que se encuentra indexado por otro tipo. Un ejemplo paradigmático de tipo de datos dependiente es el de los vectores, listas de tamaño fijo. 
 \begin{agdacode}{\it Vectores}\label{code:Vec}
 
   \ExecuteMetaData[latex/Agda.tex]{Vec}
@@ -207,7 +207,7 @@ De forma similar, la proposición que es siempre verdadera tiene un elemento tri
 
 \ExecuteMetaData[latex/Agda.tex]{top}
 
-Además, podemos construir la proposición de la negación. Como vemos en el código \ref{code:neg}, la negación de una proposición modelada en el tipo $A$ es la función de tipo $A \to \bot$. Esto se debe a que cuando una proposición es falsa carece de pruebas que la habiten y es sólo en ese caso posible construir una función (la función vacía) que vaya hacia el tipo vacío. En contrapartida, si queremos probar la negación de una proposición verdadera nos resulta imposible, puesto que tendríamos que proveer un elemento de \AgdaDatatype{$\bot$}. También resulta sensato desde el punto de vista de la lógica, donde la negación de un juicio suele expresarse como su implicancia a falso. 
+Además, podemos construir la proposición de la negación. Como vemos en el código \ref{code:neg}, la negación de una proposición modelada en el tipo $A$ es la función de tipo $A \to \bot$. Esto se debe a que cuando una proposición es falsa carece de pruebas que la habiten y es solo en ese caso posible construir una función (la función vacía) que vaya hacia el tipo vacío. En contrapartida, si queremos probar la negación de una proposición verdadera nos resulta imposible, puesto que tendríamos que proveer un elemento de \AgdaDatatype{$\bot$}. También resulta sensato desde el punto de vista de la lógica, donde la negación de un juicio suele expresarse como su implicancia a falso. 
 
 \begin{agdacode}{\it Negación de una proposición} \label{code:neg}
 
@@ -223,7 +223,7 @@ El tipo de datos \AgdaDatatype{$\_\equiv\_$} construye, a partir de un tipo $A$ 
   \ExecuteMetaData[latex/MyPropositionalEquality.tex]{equiv}
 \end{agdacode}
 
-A primera vista esta equivalencia puede parecer insuficiente pues a priori sólo nos permite probar la igualdad de elementos que son trivialmente iguales. Para entender cómo esta definición resulta útil para probar equivalencias no triviales, tenemos primero que comprender la forma en que Agda entiende a la igualdad {\it definicional} y su mecanismo de {\it unificación}.   
+A primera vista esta equivalencia puede parecer insuficiente pues a priori solo nos permite probar la igualdad de elementos que son trivialmente iguales. Para entender cómo esta definición resulta útil para probar equivalencias no triviales, tenemos primero que comprender la forma en que Agda entiende a la igualdad {\it definicional} y su mecanismo de {\it unificación}.   
 
 Recordemos la definición de \AgdaFunction{suma} dada en el código \ref{code:suma}. Allí dijimos que sumar el sucesor de un número con otro es {\it igual} al sucesor de la suma de ellos dos. Dicha igualdad es una igualdad {\it definicional} y Agda la considera trivial. Entonces podemos proveer una prueba de dicha aseveración de forma muy sencilla, simplemente con el constructor de la reflexividad, como se muestra en el siguiente código:
 
@@ -326,7 +326,7 @@ Podemos incluso probar una versión aún más general de congruencia: cuando las
 \ExecuteMetaData[latex/ExtrasToPrint.tex]{dcong}
 \end{agdacode}
 
-Otro ejemplo de lema posible de probar gracias a la introducción de la equivalencia heterogénea es aquél que nos ayuda con la prueba de la igualdad de para sumas dependientes. Para demostrar que un elemento de tipo \AgdaDatatype{$\Sigma$} $A$ $B$ es equivalente a otro de tipo \AgdaDatatype{$\Sigma$} $A'$ $B'$, nos basta probar que son equivalentes sus primeras componentes y el tipo y valor de las segundas, como se muestra en el código \ref{code:dSumEq}.
+Otro ejemplo de lema posible de probar gracias a la introducción de la equivalencia heterogénea es aquel que nos ayuda con la prueba de la igualdad de para sumas dependientes. Para demostrar que un elemento de tipo \AgdaDatatype{$\Sigma$} $A$ $B$ es equivalente a otro de tipo \AgdaDatatype{$\Sigma$} $A'$ $B'$, nos basta probar que son equivalentes sus primeras componentes y el tipo y valor de las segundas, como se muestra en el código \ref{code:dSumEq}.
 
 \begin{agdacode}{\it Equivalencia de habitantes de sumas dependientes}\label{code:dSumEq}
 
@@ -349,7 +349,7 @@ Las pruebas de la validez de la simetría y transitividad son similares a las co
 
 Otro caso que nos interesa examinar es aquel caso donde se quiera probar equivalencia de funciones.
 Luego de haber definido \AgdaFunction{cong} para la equivalencia heterogénea, queda claro que es posible probar que $f x \cong f y$ siendo $x\cong y$. En un problema nos encontramos cuando queremos probar lo mismo sobre las funciones en lugar de los argumentos. Es decir, probar que $f \cong g$ a partir de saber que para todo $x$ vale $f x \cong g\; x$.
-En el marco de la teoría de tipos de Agda no nos será posible demostrar esto y nos será necesario apelar al axioma de extensionalidad. Es decir, aquél que indica que dos funciones son iguales si siempre lo son al ser aplicadas al mismo argumento. Esto no es más ni menos que la definición de la igualdad entre funciones, lo que implica que resulte sensato agregar dicha propiedad en forma de axioma.
+En el marco de la teoría de tipos de Agda no nos será posible demostrar esto y nos será necesario apelar al axioma de extensionalidad. Es decir, aquel que indica que dos funciones son iguales si siempre lo son al ser aplicadas al mismo argumento. Esto no es más ni menos que la definición de la igualdad entre funciones, lo que implica que resulte sensato agregar dicha propiedad en forma de axioma.
 
 En Agda un axioma se expresa con la palabra reservada \AgdaKeyword{postulate}.
 El siguiente código expone los postulados de extensionalidad para funciones con argumento explícito (\AgdaFunction{ext}) e implícito (\AgdaFunction{iext}):
@@ -388,9 +388,9 @@ El siguiente postulado de extensionalidad es un poco más general que el present
 \section{Universos} \label{universos}
 
 
-En esta sección introduciremos la noción de universo con el objetivo de dar fundamento a la temática principal de este trabajo, que consiste ni más ni menos que en un universo en particular, el universo de containers. Comenzaremos con la definición conceptual, para luego exponer ejemplos que motivarán las ventajas y posibles usos de estas construcciones.
+En esta sección introduciremos la noción de universo con el objetivo de dar fundamento a la temática principal de este trabajo, que consiste ni más ni menos que en un universo en particular, el universo de containers. Comenzaremos con la definición intuitiva, para luego exponer una de las formas de construir universos, junto con ejemplos que motivarán las ventajas y posibles usos de estas construcciones.
 
-La posibilidad de crear universos es una característica que poseen los lenguajes con tipos dependientes de la que carecen lenguajes con tipos simples.   
+%La posibilidad de crear universos es una característica que poseen los lenguajes con tipos dependientes de la que carecen lenguajes con tipos simples.   
 En términos generales, un universo de tipos es simplemente una colección de tipos, cerrada bajo ciertos constructores. En otras palabras, un universo es un tipo cuyos habitantes son a su vez tipos. Dicho esto, el ejemplo más inmediato de universo que se nos ocurre es \AgdaDatatype{Set}, 
 %Un claro ejemplo de universo de tipos ya fue
 presentado en la introducción y vuelto a mencionar en la sección \ref{agda:data}.
@@ -400,12 +400,13 @@ Para evitar una paradoja similar a la paradoja de Russell, los tipos de Agda se 
 \sangrar
 \AgdaDatatype{Set} : \AgdaDatatype{Set$_{1}$} : \AgdaDatatype{Set$_{2}$} : \AgdaDatatype{Set$_{3}$} \ldots
 
-Pero la importancia de los universos no se termina allí. La programación genérica tiene como objeto la construcción de algoritmos que actúen de forma genérica sobre un conjunto determinado de tipos. Pero el problema que surge al querer programar genéricamente, es que no podemos hacer pattern matching sobre el tipo \AgdaDatatype{Set}. Por otra parte, el conjunto de tipos sobre el que se pretende trabajar es muchas veces un subconjunto de todos los tipos posibles. En este marco, sería interesante poder definir nuestros propios universos, delimitando así el conjunto de tipos con los que habremos de trabajar. 
+Pero la importancia de los universos no se termina allí. Presentar otros posibles usos de universos es en cierto modo contestar a la pregunta ¿por qué querríamos agrupar tipos? ¿para qué y según qué criterios?
 
-Gracias a la expresividad inherente a los lenguajes de tipos dependientes, podemos describir ese conjunto de forma precisa a partir de definir una colección de {\it códigos sintácticos}, uno por cada tipo a incluir, y una {\it función de interpretación} o {\it extensión} que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
+La programación genérica tiene como objeto la construcción de algoritmos que actúen de forma genérica sobre un conjunto determinado de tipos. Pero el problema que surge al querer programar genéricamente, es que no podemos hacer pattern matching sobre el tipo \AgdaDatatype{Set}. Por otra parte, el conjunto de tipos sobre el que se pretende trabajar es muchas veces un subconjunto de todos los tipos posibles. En este marco, sería interesante poder definir nuestros propios universos, delimitando así el conjunto de tipos con los que habremos de trabajar. 
 
+Gracias a la expresividad inherente a los lenguajes de tipos dependientes, podemos describir un universo de forma precisa a partir de definir una colección de {\it códigos sintácticos}, uno por cada tipo a incluir, y una {\it función de interpretación} o {\it extensión} que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
 
-Utilizando notación Agda, diremos que un {\it universo}\footnote{desde ahora se utilizará el término universo sobre todo para referir a un conjunto de códigos sintácticos equipado con una función de interpretación, dejando de lado la primera aproximación de definición, como colección de tipos.} es un tipo $U$ de códigos y una función extensión $\agdaExt{$\_$}$ tal que
+Utilizando notación Agda, diremos que un {\it universo}\footnote{desde ahora se utilizará el término universo en dos sentidos: en el sentido amplio, como colección de tipos, así como para referir a un conjunto de códigos sintácticos equipado con una función de interpretación.}\,es un tipo $U$ de códigos y una función extensión $\agdaExt{$\_$}$ tal que:
 $$\begin{array}{rl}
   U\, & : \, \AgdaDatatype{Set}\\
   \agdaExt{$\_$}\, & : \,  U \to \AgdaDatatype{Set}
@@ -425,7 +426,7 @@ Es posible definir funciones genéricas sobre un universo simplemente haciendo p
 \ExecuteMetaData[latex/Universos.tex]{extension}
 \end{agdacode}
 
-Podemos generalizar más aún esta definición y así incluir la posibilidad de definir universos de constructores de tipos. Observemos el siguiente ejemplo de universo que nuclea a los constructores de listas y de árboles\footnote{Ver códigos \ref{list} y \ref{code:tree} para la definición de los elementos \AgdaDatatype{List} y \AgdaDatatype{Tree}}
+Podemos generalizar más aún esta definición y así incluir la posibilidad de definir universos de constructores de tipos. Observemos el siguiente ejemplo de universo que nuclea a los constructores de listas y de árboles\footnote{Ver códigos \ref{list} y \ref{code:tree} para la definición de los elementos \AgdaDatatype{List} y \AgdaDatatype{Tree}.}
 
 \begin{agdacode}\label{code:codes2}{\it Códigos para la definición del universo de constructores }
 
