@@ -406,7 +406,7 @@ La programación genérica tiene como objeto la construcción de algoritmos que 
 
 Gracias a la expresividad inherente a los lenguajes de tipos dependientes, podemos describir un universo de forma precisa a partir de definir una colección de {\it códigos sintácticos}, uno por cada tipo a incluir, y una {\it función de interpretación} o {\it extensión} que vaya del tipo de los códigos hacia el tipo de los tipos, asignando a cada código, el tipo que representa.
 
-Utilizando notación Agda, diremos que un {\it universo}\footnote{desde ahora se utilizará el término universo en dos sentidos: en el sentido amplio, como colección de tipos, así como para referir a un conjunto de códigos sintácticos equipado con una función de interpretación.}\,es un tipo $U$ de códigos y una función extensión $\agdaExt{$\_$}$ tal que:
+Utilizando notación Agda, diremos que un {\it universo}\footnote{Desde ahora se utilizará el término universo en dos sentidos: en el sentido amplio, como colección de tipos, así como para referir a un conjunto de códigos sintácticos equipado con una función de interpretación.}\,es un tipo $U$ de códigos y una función extensión $\agdaExt{$\_$}$ tal que:
 $$\begin{array}{rl}
   U\, & : \, \AgdaDatatype{Set}\\
   \agdaExt{$\_$}\, & : \,  U \to \AgdaDatatype{Set}
