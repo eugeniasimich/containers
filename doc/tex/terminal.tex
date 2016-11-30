@@ -11,7 +11,7 @@ Si pensamos por un momento e intentamos construir dicha función, nos resultará
 Por otro lado, es muy simple construir una función {\it desde} el conjunto vacío hacia cualquier otro objeto, simplemente por el hecho de no necesitar proveer ningún valor. La función vacía será la única función que podamos construir. Hemos encontrado una característica del conjunto vacío: siempre existe una única función desde él hacia cualquier otro conjunto. Es este atributo el que le da el nombre de {\it objeto inicial}
 a su generalización en teoría de categorías. En la definición \ref{cat:initial} se expone formalmente.
 
-Como ya hemos comentado en reiteradas ocasiones, si revertimos el sentido de los morfismos en una categoría $\C$ obtenemos una nueva categoría, la categoría dual $\C^{op}$. Allí encontramos los duales de cada construcción, en particular, de la construcción de objeto inicial: el objeto {\it terminal}. Si dijimos que un objeto es inicial cuando siempre exista un morfismo único hacia cualquier otro objeto, uno terminal será aquél con morfismos únicos {\it desde} cualquier otro objeto. En la categoría $\Set$ contamos con muchos objetos terminales. Cualquier conjunto con un único elemento posee la propiedad de aceptar una única función desde cualquier otro conjunto hacia él: la función constante.
+Como ya hemos comentado en reiteradas ocasiones, si revertimos el sentido de los morfismos en una categoría $\C$ obtenemos una nueva categoría, la categoría dual $\C^{op}$. Allí encontramos los duales de cada construcción, en particular, de la construcción de objeto inicial: el objeto {\it terminal}. Si dijimos que un objeto es inicial cuando siempre exista un morfismo único hacia cualquier otro objeto, uno terminal será aquel con morfismos únicos {\it desde} cualquier otro objeto. En la categoría $\Set$ contamos con muchos objetos terminales. Cualquier conjunto con un único elemento posee la propiedad de aceptar una única función desde cualquier otro conjunto hacia él: la función constante.
 
 
 \subsection{Definición y formalización}
@@ -96,14 +96,14 @@ En el código \ref{hasInitial} se presenta la instancia completa, garantizando q
 \end{agdacode}
 
 
-Notar que así como hemos pensado en construir el objeto inicial de la categoría de containers a partir de la definición e intuición expresadas previamente, podríamos también haberlo motivado como la introducción de aquél container que representa al tipo vacío. Pensado de esa forma, observemos que ya contamos con una forma de construirlo, puesto que el container vacío no es más que el container constante presentado en el ejemplo \ref{cont:k}, instanciado en el conjunto vacío:
+Notar que así como hemos pensado en construir el objeto inicial de la categoría de containers a partir de la definición e intuición expresadas previamente, podríamos también haberlo motivado como la introducción de aquel container que representa al tipo vacío. Pensado de esa forma, observemos que ya contamos con una forma de construirlo, puesto que el container vacío no es más que el container constante presentado en el ejemplo \ref{cont:k}, instanciado en el conjunto vacío:
 
 \sangrar
 \AgdaFunction{Zero} $=$ \AgdaFunction{cK} $\bot$
 
 %%%%%TERMINAL
 
-De la misma forma, el container unitario es aquél que construye el tipo que alberga a un único elemento. Podemos pensarlo como un container constante instanciado en el tipo $\top$ con un único elemento, \AgdaInductiveConstructor{tt}.
+De la misma forma, el container unitario es aquel que construye el tipo que alberga a un único elemento. Podemos pensarlo como un container constante instanciado en el tipo $\top$ con un único elemento, \AgdaInductiveConstructor{tt}.
 
 \sangrar
 \AgdaFunction{One} $=$ \AgdaFunction{cK} $\top$

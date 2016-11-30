@@ -71,13 +71,13 @@ Las propiedades universales son ubicuas en la matemática. La teoría de categor
 
 \vspace{3ex}
 
-Como nota de color resulta interesante mencionar que otra denominación para los coproductos que suele encontrarse en la bibliografía es la de {\it suma}, siendo un nombre más intuitivo, sobre todo cuando pensamos en ciertas categorías. El apelativo {\it coproducto} se origina en el hábito de denominar co-{\it concepto} al dual de un {\it concepto}. Recordemos que la categoría dual $\C^{op}$ de una categoría $\C$ es aquella que se obtiene al revertir el sentido de los morfismos. De este modo, un co-{\it concepto} en una categoría $\C$ es un {\it concepto} en $\C^{op}$. Veremos en la sección \ref{cons:prod} que la idea de {\it producto} puede pensarse en los mismos términos que el coproducto, pero revirtiendo el sentido de las flechas del diagrama conmutativo. Dicho esto cabe preguntarse: ¿porqué entonces no se llama {\it cosuma} al producto? Pues porque en teoría de categorías, el producto fue concebido primero. En 1950, Saunders Mac Lane~\cite{maclane1950} presenta lo que sería muy probablemente el ejemplo más remoto de uso de la teoría de categorías para definir una noción matemática fundamental\footnote{Ver~\cite{Awodey}}. 
+Como nota de color resulta interesante mencionar que otra denominación para los coproductos que suele encontrarse en la bibliografía es la de {\it suma}, siendo un nombre más intuitivo, sobre todo cuando pensamos en ciertas categorías. El apelativo {\it coproducto} se origina en el hábito de denominar co-{\it concepto} al dual de un {\it concepto}. Recordemos que la categoría dual $\C^{op}$ de una categoría $\C$ es aquella que se obtiene al revertir el sentido de los morfismos. De este modo, un co-{\it concepto} en una categoría $\C$ es un {\it concepto} en $\C^{op}$. Veremos en la sección \ref{cons:prod} que la idea de {\it producto} puede pensarse en los mismos términos que el coproducto, pero revirtiendo el sentido de las flechas del diagrama conmutativo. Dicho esto cabe preguntarse: ¿por qué entonces no se llama {\it cosuma} al producto? Pues porque en teoría de categorías, el producto fue concebido primero. En 1950, Saunders Mac Lane~\cite{maclane1950} presenta lo que sería muy probablemente el ejemplo más remoto de uso de la teoría de categorías para definir una noción matemática fundamental\footnote{Ver~\cite{Awodey}.}. 
 
 \vspace{3ex}
 
 A continuación formalizaremos en Agda lo presentado hasta aquí. Seguiremos los pasos de la sección \ref{cat} y extenderemos dicho modelo para permitir expresar cuándo una categoría tiene coproductos.
 
-Como expusimos anteriormente, Agda nos permite definir estructuras algebraicas que incluyan no sólo al portador con sus operaciones sino también las propiedades que se deben cumplir.
+Como expusimos anteriormente, Agda nos permite definir estructuras algebraicas que incluyan no solo al portador con sus operaciones sino también las propiedades que se deben cumplir.
 El código \ref{code:hasCoproducts} formaliza lo presentado, definiendo una estructura de record indexado por una categoría \AgdaBound{\C}. Dar una instancia de \AgdaFunction{HasCoproducts} \AgdaBound{\C} implica probar que la categoría \AgdaBound{\C} cuenta con coproductos.
 
 \begin{agdacode}{\it Formalización de categoría con coproductos}\hspace{3ex}\label{code:hasCoproducts}
@@ -118,7 +118,7 @@ El morfismo de coreunión construye un morfismo a partir de otros dos, eligiendo
 \ExecuteMetaData[latex/Sum.tex]{coreunion}
 
 Para terminar, se requiere dar pruebas de haber construido el coproducto correctamente. Probaremos por un lado que
-inyectar elementos al lado izquierdo de un coproducto para luego aplicar la coreunión es igual a sólo hacer lo que decide la coreunión sobre la parte izquierda. Igualmente sobre la parte derecha.
+inyectar elementos al lado izquierdo de un coproducto para luego aplicar la coreunión es igual a solo hacer lo que decide la coreunión sobre la parte izquierda. Igualmente sobre la parte derecha.
 Es decir, queremos construir elementos de \AgdaFunction{$[$} $f , g$ \AgdaFunction{$]\ \circ\ \iota_{1} \cong$} $f$ y de \AgdaFunction{$[$} $f , g$ \AgdaFunction{$]\ \circ\ \iota_{2} \cong$} $g$ dados los morfismos $f$ y $g$. A continuación se expone la definición para el primer caso, la prueba para la segunda proyección es análoga.
 
 \ExecuteMetaData[latex/Sum.tex]{copairIdl}

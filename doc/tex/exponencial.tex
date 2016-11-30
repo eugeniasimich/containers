@@ -152,7 +152,7 @@ Finalmente formalizamos el hecho de que una categoría $\C$ cuente con exponenci
 \subsection{Exponencial de Containers}
 En esta sección veremos que la categoría $\Cont$ de containers cuenta con exponenciales~\cite{alti:2010} y expondremos su formalización.
 
-Con el objetivo presentar el exponencial de containers de la forma más comprensible posible, lo introduciremos a partir del análisis de un ejemplo, para luego presentarlo de forma general.
+Con el objetivo de presentar el exponencial de containers de la forma más comprensible posible, lo introduciremos a partir del análisis de un ejemplo, para luego presentarlo de forma general.
 
 \begin{example} {\it Currificando} \AgdaFunction{append} 
 
@@ -185,9 +185,9 @@ $$
      \label{fig:append2}
 \end{figure}
 
-Podemos apreciar en la figura \ref{fig:curryappend} un panorama de general de comportamiento de la función \AgdaFunction{curryappend} y un esquema del objeto exponencial. Para referirnos con más exactitud a cada una de los containers de lista, los llamaremos \rojo{$a$}, \rojo{$b$} y \rojo{$c$}, de longitudes 2, 3 y 5 respectivamente. Así como en la figura \ref{fig:append2} representábamos al container producto $(\rojo{a},\rojo{b})$ entre paréntesis, ahora representamos al exponencial dentro del óvalo de la figura \ref{fig:curryappend}.
+Podemos apreciar en la figura \ref{fig:curryappend} un panorama general de comportamiento de la función \AgdaFunction{curryappend} y un esquema del objeto exponencial. Para referirnos con más exactitud a cada una de los containers de lista, los llamaremos \rojo{$a$}, \rojo{$b$} y \rojo{$c$}, de longitudes 2, 3 y 5 respectivamente. Así como en la figura \ref{fig:append2} representábamos al container producto $(\rojo{a},\rojo{b})$ entre paréntesis, ahora representamos al exponencial dentro del óvalo de la figura \ref{fig:curryappend}.
 
-Las formas posibles del exponencial de dos listas incluirán no sólo una forma de construir la longitud de \rojo{$c$} a partir de las longitudes de las listas \rojo{$a$} y \rojo{$b$}, sino también la información de la reubicación de las posiciones de \rojo{$b$} en las posiciones de \rojo{$c$}. Más aún, se marcarán con un elemento distinguible \AgdaInductiveConstructor{tt} de tipo \AgdaDatatype{$\top$} a aquellas posiciones que se solían asignar a posiciones en \rojo{$a$}. Esto se ve representado en la figura \ref{fig:curryappend} con flechas rectas.
+Las formas posibles del exponencial de dos listas incluirán no solo una forma de construir la longitud de \rojo{$c$} a partir de las longitudes de las listas \rojo{$a$} y \rojo{$b$}, sino también la información de la reubicación de las posiciones de \rojo{$b$} en las posiciones de \rojo{$c$}. Más aún, se marcarán con un elemento distinguible \AgdaInductiveConstructor{tt} de tipo \AgdaDatatype{$\top$} a aquellas posiciones que se solían asignar a posiciones en \rojo{$a$}. Esto se ve representado en la figura \ref{fig:curryappend} con flechas rectas.
 
 De esta forma, de las únicas posiciones que queda por determinar la procedencia son de aquellas marcadas con el valor \AgdaInductiveConstructor{tt}. Esas posiciones conformarán entonces el conjunto de posiciones del container exponencial. En el ejemplo de la figura \ref{fig:curryappend} encontramos dos de estas posiciones, representadas como aquellas de donde parten las flechas curvas.
 
@@ -228,7 +228,7 @@ Recapitulando, una forma de un container exponencial es, por un lado, una funci�
 
   \ExecuteMetaData[latex/Examples.tex]{curryappend}
 
-  Por un lado, la función de mapeo de formas, de tipo $\AgdaField{Sh}\ \AgdaFunction{cList}  \to (\AgdaField{Sh}\ \AgdaFunction{cList}\ \AgdaFunction{$\hat{}$}\ \AgdaFunction{cList})$, asigna a cada forma $n_1$ de la primera lista una forma del exponencial de las otras dos listas. Esta forma asignada no es ni más ni menos que la función suma, igual que para el caso de \AgdaFunction{append}. Además, incluye una función de posiciones, la misma función \AgdaFunction{splitFin} utilizada en \AgdaFunction{append}, sólo que con los elementos izquierdos del coproducto {\it borrados}, i.e. reemplazados por el elemento \AgdaInductiveConstructor{tt}.
+  Por un lado, la función de mapeo de formas, de tipo $\AgdaField{Sh}\ \AgdaFunction{cList}  \to (\AgdaField{Sh}\ \AgdaFunction{cList}\ \AgdaFunction{$\hat{}$}\ \AgdaFunction{cList})$, asigna a cada forma $n_1$ de la primera lista una forma del exponencial de las otras dos listas. Esta forma asignada no es ni más ni menos que la función suma, igual que para el caso de \AgdaFunction{append}. Además, incluye una función de posiciones, la misma función \AgdaFunction{splitFin} utilizada en \AgdaFunction{append}, solo que con los elementos izquierdos del coproducto {\it borrados}, i.e. reemplazados por el elemento \AgdaInductiveConstructor{tt}.
  
 La función \AgdaFunction{eraseLeft} transforma un elemento de tipo $A$ \AgdaFunction{$\uplus$} $B$ en uno de tipo \AgdaFunction{$\top$} \AgdaFunction{$\uplus$} $B$, convirtiendo todo elemento de la forma \AgdaInductiveConstructor{inj$_1$}$\, a$ en \AgdaInductiveConstructor{inj$_1$ tt}, dejando igual al resto.
 
@@ -267,7 +267,7 @@ Extraer el valor izquierdo luego de haberlo insertado retorna como resultado el 
 
 \ExecuteMetaData[latex/Exponential.tex]{aux3}
 
-Hasta ahora hemos expuesto funciones auxiliares que usarán en las demostraciones de los respectivos isomorfismos, hecho que resulta evidente al observar que en todos los casos probamos que la composición de dos funciones nos da como resultado la identidad. A continuación probaremos dos lemas necesarios para la prueba de la naturalidad. Esta situación también puede vislumbrarse si se observa con atención. 
+Hasta ahora hemos expuesto funciones auxiliares que se usarán en las demostraciones de los respectivos isomorfismos, hecho que resulta evidente al observar que en todos los casos probamos que la composición de dos funciones nos da como resultado la identidad. A continuación probaremos dos lemas necesarios para la prueba de la naturalidad. Esta situación también puede vislumbrarse si se observa con atención. 
 
 Borrar a izquierda un coproducto al que se le modificó su componente izquierda es equivalente a borrar el coproducto original:
 

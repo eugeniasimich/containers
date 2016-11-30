@@ -122,7 +122,7 @@ el container que representa a las listas está dado por el elemento \AgdaFunctio
 
  \ExecuteMetaData[latex/Examples.tex]{clist}
 
-Aludiendo a lo expuesto anteriormente, las listas son aquél tipo cuya forma está dada por su longitud. Es decir, el conjunto de todas las formas posibles será el conjunto de los números naturales y el cero. Fijada una longitud \AgdaBound{n}, el conjunto de posiciones será el de todos los enteros entre \AgdaBound{0} y \AgdaBound{n - 1}. Es decir, es el \AgdaBound{n}-ésimo conjunto finitario.
+Aludiendo a lo expuesto anteriormente, las listas son aquel tipo cuya forma está dada por su longitud. Es decir, el conjunto de todas las formas posibles será el conjunto de los números naturales y el cero. Fijada una longitud \AgdaBound{n}, el conjunto de posiciones será el de todos los enteros entre \AgdaBound{0} y \AgdaBound{n - 1}. Es decir, es el \AgdaBound{n}-ésimo conjunto finitario.
 \end{example}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,7 +151,7 @@ Un ejemplo más, es el de las funciones de un tipo arbitrario en sí mismo. Es d
  \ExecuteMetaData[latex/Aux.tex]{endo}
 
  Tanto el constructor de tipos \AgdaDatatype{Pair}, como el constructor \AgdaDatatype{Endo} no serán posibles de ser representados como containers. Esto se debe a que restringimos el análisis a {\it ciertos} constructores de tipo.
-Por simplicidad, el tipo de datos \AgdaDatatype{Pair} no será contemplado, puesto que nos limitamos a constructores de un sólo argumento. Sin embargo, toda la teoría de containers se extiende fácilmente a constructores de más argumentos. En tal caso sí incluiríamos al tipo de los pares. 
+Por simplicidad, el tipo de datos \AgdaDatatype{Pair} no será contemplado, puesto que nos limitamos a constructores de un solo argumento. Sin embargo, toda la teoría de containers se extiende fácilmente a constructores de más argumentos. En tal caso sí incluiríamos al tipo de los pares. 
  Por otro lado, tampoco podremos representar al tipo \AgdaDatatype{Endo} puesto que nos conciernen aquellos constructores que cumplen ciertas propiedades y a los que llamaremos {\it funtores}.
 
 
@@ -288,7 +288,7 @@ La función de extensión se constituye como un mecanismo para obtener nuevament
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{example} \label{cont:k}
-  Otro ejemplo trivial es el del container que construye el funtor constante. Es decir, aquél que ignora totalmente el tipo argumento y retorna un tipo constante fijado previamente.
+  Otro ejemplo trivial es el del container que construye el funtor constante. Es decir, aquel que ignora totalmente el tipo argumento y retorna un tipo constante fijado previamente.
 
  \ExecuteMetaData[latex/Examples.tex]{cK}
 
@@ -310,7 +310,7 @@ La función de extensión se constituye como un mecanismo para obtener nuevament
 %%     MAYBE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{example} El constructor de datos \AgdaDatatype{Maybe} es aquél que agrega un elemento al tipo argumento.
+\begin{example} El constructor de datos \AgdaDatatype{Maybe} es aquel que agrega un elemento al tipo argumento.
 Un valor de tipo \AgdaDatatype{Maybe} \AgdaBound{X} contiene o bien un valor \AgdaBound{x} de tipo \AgdaBound{X} (representado por el elemento \AgdaInductiveConstructor{just} \AgdaBound{x} ) o bien nada (representado por el valor \AgdaInductiveConstructor{nothing}). La utilización de \AgdaDatatype{Maybe} es una estrategia para lidiar con errores o casos excepcionales y resulta fundamental a la hora de escribir programas totales. 
   Se define inductivamente como:
   
@@ -395,7 +395,7 @@ Advertir una ventaja que nos proveen los containers: no necesitamos apelar a tod
 
   \ExecuteMetaData[latex/Aux.tex]{reader}
 
-  Asumiendo que ya contamos con un elemento \AgdaBound{E}, las formas posibles para los datos se limita a una sola. Las posiciones sí son más. ¿Cuántas?. Pues si estamos modelando funciones de \AgdaBound{E}\AgdaSymbol{$\to$}\AgdaBound{X}, necesitamos guardar tantos \AgdaBound{X} como elementos haya en \AgdaBound{E}.
+  Asumiendo que ya contamos con un elemento \AgdaBound{E}, las formas posibles para los datos se limita a una sola. Las posiciones sí son más. ¿Cuántas? Pues si estamos modelando funciones de \AgdaBound{E}\AgdaSymbol{$\to$}\AgdaBound{X}, necesitamos guardar tantos \AgdaBound{X} como elementos haya en \AgdaBound{E}.
   
   \ExecuteMetaData[latex/Examples.tex]{cReader}
 
@@ -458,7 +458,7 @@ La definición del conjunto de formas no difiere en mucho de la definición
 inductiva del tipo \AgdaDatatype{Tree}.\footnote{Notar
   que lo mismo sucede con las listas. El conjunto de formas resulta
   ser el de los naturales, cuya definición tiene la misma estructura
-  que la de las listas, sólo que ignorando los datos que se almacenan} 
+  que la de las listas, solo que ignorando los datos que se almacenan.} 
 
 \ExecuteMetaData[latex/Examples.tex]{treeSh}
 
@@ -473,7 +473,7 @@ Finalmente, el container de los árboles binarios con datos en las hojas queda d
 
 
 Observar que si quisiéramos representar árboles con la información almacenada en
-los nodos, sólo cambiaríamos el conjunto de las posiciones, que dependerá de cuántos nodos tenga cada forma.
+los nodos, solo cambiaríamos el conjunto de las posiciones, que dependerá de cuántos nodos tenga cada forma.
 
 Otra cuestión interesante de destacar es el nivel de complejidad de notación que se alcanza al momento de representar árboles. En el capítulo \ref{chapter:construcciones} veremos que contamos con ciertos mecanismos de construcción de containers que proveen una suerte de modularidad, pudiendo componer containers de diversas maneras.
 Estudiaremos allí un álgebra de containers.
@@ -592,7 +592,7 @@ Dado cualquier container $C$, existe el morfismo identidad, que deja fija las fo
 
 \subsection{Equivalencia de morfismos}
 
-Un lema que nos resultará muy útil para demostrar equivalencias en esta sección es aquél que prueba la igualdad de morfismos de containers. Dos morfismos de containers $f$ y $g$ son equivalentes siempre que lo sean sus componentes, las funciones de formas y posiciones.
+Un lema que nos resultará muy útil para demostrar equivalencias en esta sección es aquel que prueba la igualdad de morfismos de containers. Dos morfismos de containers $f$ y $g$ son equivalentes siempre que lo sean sus componentes, las funciones de formas y posiciones.
 
 \begin{agdacode}\label{morph:equivalence}{\it Equivalencia entre morfismos de containers}
   
@@ -600,8 +600,8 @@ Un lema que nos resultará muy útil para demostrar equivalencias en esta secci�
 \end{agdacode}
 
 Este es un claro ejemplo donde Agda no puede resolver trivialmente una equivalencia por no poder unificar los tipos de los argumentos.
-Agda sólo nos permite probar por \AgdaInductiveConstructor{refl} una vez hecho pattern matching en los argumentos de \AgdaFunction{mEq}.
-Esto es así puesto que sólo una vez probada la equivalencia de las funciones de formas, las funciones de posiciones tienen exactamente el mismo tipo.
+Agda solo nos permite probar por \AgdaInductiveConstructor{refl} una vez hecho pattern matching en los argumentos de \AgdaFunction{mEq}.
+Esto es así puesto que solo una vez probada la equivalencia de las funciones de formas, las funciones de posiciones tienen exactamente el mismo tipo.
 
 Entonces, yendo paso a paso, el único habitante de \mSh $f$ \AgdaFunction{$\cong$} \mSh $g$ es \AgdaInductiveConstructor{refl}. Indicado esto, Agda unifica esta equivalencia y es posible hacer pattern matching en el segundo argumento. Al unificar la prueba de \mPos $f$ \AgdaFunction{$\cong$} \mPos $g$ la prueba final resulta trivial. 
 

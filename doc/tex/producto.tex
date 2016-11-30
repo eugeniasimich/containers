@@ -4,7 +4,7 @@
 \label{cons:prod:motivacion}
 Para continuar con la línea seguida en la sección \ref{cons:coprod} de coproductos, trataremos de definir la construcción de producto en una categoría con la intención de abstraernos del caso particular de la ya conocida categoría de conjuntos.
 
-Recordemos que el producto cartesiano de dos conjuntos $X$, $Y$ se define como el conjunto de los pares $(x,y)$ donde $x \in X$, $y \in Y$. Es posible definir dos funciones que dado un par, proyecten cada uno de los elementos. El producto en Agda está dado por un record equipado con dos funciones (ver código \ref{code:record:producto}, pág \pageref{code:record:producto})
+Recordemos que el producto cartesiano de dos conjuntos $X$, $Y$ se define como el conjunto de los pares $(x,y)$ donde $x \in X$, $y \in Y$. Es posible definir dos funciones que dado un par, proyecten cada uno de los elementos. El producto en Agda está dado por un record equipado con dos funciones (ver código \ref{code:record:producto}, pág \pageref{code:record:producto}).
 
 Es nuestro objetivo pensar en las relaciones en lugar de pensar en los elementos, para así abstraernos y concluir en la definición categórica, determinando restricciones sobre los morfismos. Con esto en mente, podríamos decir que un objeto producto es uno para el cual existan morfismos de proyección que vayan del objeto en cuestión hacia cada uno de los factores.
 
@@ -162,7 +162,7 @@ La primera lista del par tiene longitud \AgdaNumber{3} y la segunda, \AgdaNumber
 
   \ExecuteMetaData[latex/Examples.tex]{splitFin}
 
-  La figura \ref{fig:append} expone cómo se realiza la concatenación de los containers de listas de longitud uno y tres. En la parte superior vemos los containers de lista originales y en la parte inferior, el container resultante. 
+  La figura \ref{fig:append} expone cómo se realiza la concatenación de los containers de listas de longitud uno y tres. En la parte superior vemos los containers de listas originales y en la parte inferior, el container resultante. 
 
 \begin{figure}[H]
     \begin{center}

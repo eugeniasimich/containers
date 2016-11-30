@@ -1,7 +1,7 @@
 \chapter*{Conclusiones}
 \addcontentsline{toc}{chapter}{Conclusiones}
 
-La programación genérica tiene como objetivo primordial el reuso de código. Para lograrlo, apela a la construcción de programas cuyos argumentos puedan pertenecer no sólo a un tipo de datos particular, sino a un conjunto más amplio.   
+La programación genérica tiene como objetivo primordial el reuso de código. Para lograrlo, apela a la construcción de programas cuyos argumentos puedan pertenecer no solo a un tipo de datos particular, sino a un conjunto más amplio.   
 Una de las problemáticas principales a la que la programación genérica debe enfrentarse es la de poder definir adecuadamente su ámbito de abstracción. Es decir, para cumplir la meta de construir programas cuyo alcance sea mayor a un único tipo de dato y, en su lugar, funcione para un subconjunto de todos los tipos posibles, es imperativo poder definir con precisión este subconjunto e incluso poder inspeccionar cada habitante de forma individual.
 
 En los lenguajes de tipos dependientes podemos obtener ese subconjunto de forma precisa a partir de definir universos. Estos consisten simplemente en códigos sintácticos, uno por cada tipo a incluir, equipados con una función de extensión que dado un código asigna el tipo de datos que éste representa.
@@ -28,7 +28,7 @@ En esta tesina se ha presentado el universo de containers {\it de único argumen
 
 Una vez realizado este avance, será posible también formalizar el hecho de que la categoría de containers es cerrada bajo álgebras iniciales y coálgebras finales.
 
-Otras extensiones que son posibles de realizarse a partir de las contribuciones de este trabajo son las referidas a la función de extensión, que lleva a cualquier habitante del universo de containers hacia un endofuntor en la categoría de conjuntos. Es posible generalizar dicha función para que resulte en un endofuntor en cualquier categoría extensa y localmente cartesiana cerrada. Además, propiedades como que dicho funtor es totalmente fiel pueden ser formalizadas y así garantizar que los morfismos de containers resulten ser, en efecto, todas y sólo todas las transformaciones naturales entre los definidos endofuntores. 
+Otras extensiones que son posibles de realizarse a partir de las contribuciones de este trabajo son las referidas a la función de extensión, que lleva a cualquier habitante del universo de containers hacia un endofuntor en la categoría de conjuntos. Es posible generalizar dicha función para que resulte en un endofuntor en cualquier categoría extensa y localmente cartesiana cerrada. Además, propiedades como que dicho funtor es totalmente fiel pueden ser formalizadas y así garantizar que los morfismos de containers resulten ser, en efecto, todas y solo todas las transformaciones naturales entre los definidos endofuntores. 
 
 En lo que se refiere al uso de las contribuciones realizadas, se espera que la biblioteca provista sirva como universo para programar genéricamente sobre un subconjunto acotado de tipos de datos, provistas las garantías de que dicho universo es cerrado bajo una serie interesante de construcciones. Por otro lado, se espera que sea un buen aporte como punto de partida para futuras formalizaciones. 
 
